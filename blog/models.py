@@ -46,10 +46,23 @@ class Ministrant(models.Model):
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    def __str__(self):
+    def __str__(self) -> str:
+        """
+        Returns a string representation of the object containing the surname and birth name.
+
+        :return: A string representing the object.
+        """
         return self.surename + ' ' + self.birthname
 
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
+        """
+        Returns the absolute URL to access the detail view of a `Ministrant` instance.
+
+        :param self: The `Ministrant` instance to generate the URL for.
+        :type self: Ministrant
+        :return: The absolute URL to access the detail view of the `Ministrant` instance.
+        :rtype: str
+        """
         return reverse('ministrant-detail', kwargs={'pk': self.pk})
 
 
