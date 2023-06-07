@@ -1,15 +1,15 @@
 {% extends "blog/base.html" %}
 {% block content %}
-    {% for post in posts %}
+    {% for ministrant in ministrants %}
         <article class="media content-section">
-          <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}">
+          <img class="rounded-circle article-img" src="{{ ministrant.author.profile.image.url }}">
           <div class="media-body">
             <div class="article-metadata">
-              <a class="mr-2" href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a>
-              <small class="text-muted">{{ post.time_stamp|date:"F d, Y" }}</small>
+              
+              <small class="text-muted">{{ ministrant.time_stamp|date:"F d, Y" }}</small>
             </div>
-            <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
-            <p class="article-content">{{ post.birthname }}</p>
+            <h2><a class="article-title" href="{% url 'ministrant-detail' ministrant.id %}">{{ ministrant.birthname }}</a></h2>
+            <p class="article-content">{{ ministrant.surename }}</p>
           </div>
         </article>
     {% endfor %}

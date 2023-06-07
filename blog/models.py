@@ -26,6 +26,14 @@ class Ministrant(models.Model):
     town = models.CharField(max_length=100)
     town_zip = models.CharField(max_length=100)
 
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.birthname + ' ' + self.surename
+
+    def get_absolute_url(self):
+        return reverse('ministrant-detail', kwargs={'pk': self.pk})
+
 
 
     # zdravotní pojišťovna	

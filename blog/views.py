@@ -14,7 +14,7 @@ from .forms import MinistrantForm
 
 def home(request):
     context = {
-        'posts': Ministrant.objects.all()
+        'ministrants': Ministrant.objects.all()
     }
     return render(request, 'blog/home.html', context)
 
@@ -22,15 +22,15 @@ def home(request):
 class MinistrantListView(ListView):
     model = Ministrant
     template_name = 'blog/home.html'  # <app>/<model>_<viewtype>.html
-    context_object_name = 'posts'
-    ordering = ['-date_posted']
+    context_object_name = 'ministrants'
+    ordering = ['-time_stamp']
     paginate_by = 5
 
 
 class UserMinistrantListView(ListView):
     model = Ministrant
-    template_name = 'blog/user_posts.html'  # <app>/<model>_<viewtype>.html
-    context_object_name = 'posts'
+    template_name = 'blog/user_ministrants.html'  # <app>/<model>_<viewtype>.html
+    context_object_name = 'ministrants'
     paginate_by = 5
 
     def get_queryset(self):
@@ -54,15 +54,16 @@ class MinistrantCreateView(LoginRequiredMixin, CreateView):
 
 class MinistrantUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Ministrant
-    fields = ['title', 'content']
+    form_class = MinistrantForm
+    # fields = ['title', 'content']
 
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
+    # def form_valid(self, form):
+    #     form.instance.author = self.request.user
+    #     return super().form_valid(form)
 
     def test_func(self):
-        post = self.get_object()
-        if self.request.user == post.author:
+        ministrant = self.get_object()
+        if self.request.user == ministrant.author:
             return True
         return False
 
@@ -72,8 +73,8 @@ class MinistrantDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     success_url = '/'
 
     def test_func(self):
-        post = self.get_object()
-        if self.request.user == post.author:
+        ministrant = self.get_object()
+        if self.request.user == ministrant.author:
             return True
         return False
 
