@@ -72,6 +72,13 @@ class MinistrantUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return False
 
 
+class AllMinistrantListView(ListView):
+    model = Ministrant
+    template_name = 'blog/all_ministrants.html'  # <app>/<model>_<viewtype>.html
+    context_object_name = 'ministrants'
+
+
+
 class MinistrantDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Ministrant
     success_url = '/'

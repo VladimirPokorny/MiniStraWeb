@@ -30,6 +30,10 @@
             <div class="navbar-nav mr-auto">
               <a class="nav-item nav-link" href="{% url 'blog-home' %}">Home</a>
               <a class="nav-item nav-link" href="{% url 'blog-about' %}">About</a>
+              {% if user.is_superuser %}
+                <a class="nav-item nav-link" href="{% url 'all-ministrants' %}">All Ministrants</a>
+              {% endif %}
+
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">

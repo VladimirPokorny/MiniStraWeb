@@ -1,0 +1,36 @@
+{% extends "blog/base.html" %}
+{% block content %}
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Jméno</th>
+          <th scope="col">Příjmení</th>
+          <th scope="col">Adresa</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ministrant in ministrants %}
+          {% if user.is_superuser%}
+            <tr>
+              <th scope="row"></th>
+              <td>{{ ministrant.birthname }}</td>
+              <td>{{ ministrant.surename }}</td>
+              <td>{{ ministrant.address }}</td>
+            </tr>
+
+
+                <!-- <article class="media content-section">
+                    <div class="media-body">
+                    <div class="article-metadata">
+                        <small class="text-muted">Přihláška podána dne {{ ministrant.time_stamp|date:"d. F Y" }}</small>
+                    </div>
+                    <h2><a class="article-title" href="{% url 'ministrant-detail' ministrant.id %}">{{ ministrant.birthname }} {{ ministrant.surename}}</a></h2>
+                    <p class="article-content">datum narození: {{ ministrant.birth_date|date:"d. F Y"  }}</p>
+                    </div>
+                </article> -->
+            {% endif %}
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}
