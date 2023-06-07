@@ -5,7 +5,8 @@ from .views import (
     MinistrantCreateView,
     MinistrantUpdateView,
     MinistrantDeleteView,
-    UserMinistrantListView
+    UserMinistrantListView,
+    generate_pdf
 )
 from . import views
 
@@ -16,5 +17,6 @@ urlpatterns = [
     path('ministrant/new/', MinistrantCreateView.as_view(), name='ministrant-create'),
     path('ministrant/<int:pk>/update/', MinistrantUpdateView.as_view(), name='ministrant-update'),
     path('ministrant/<int:pk>/delete/', MinistrantDeleteView.as_view(), name='ministrant-delete'),
+    path('ministrant/<int:pk>/pdf/', generate_pdf, name='ministrant-pdf-generate'),
     path('about/', views.about, name='blog-about'),
 ]

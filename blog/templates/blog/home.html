@@ -1,17 +1,19 @@
 {% extends "blog/base.html" %}
 {% block content %}
     {% for ministrant in ministrants %}
+      {% if ministrant.author == user or user.is_superuser%}
         <article class="media content-section">
           <img class="rounded-circle article-img" src="{{ ministrant.author.profile.image.url }}">
           <div class="media-body">
             <div class="article-metadata">
               
-              <small class="text-muted">{{ ministrant.time_stamp|date:"F d, Y" }}</small>
+              <small class="text-muted">Přihláška podána dne {{ ministrant.time_stamp|date:"d. F Y" }}</small>
             </div>
-            <h2><a class="article-title" href="{% url 'ministrant-detail' ministrant.id %}">{{ ministrant.birthname }}</a></h2>
-            <p class="article-content">{{ ministrant.surename }}</p>
+            <h2><a class="article-title" href="{% url 'ministrant-detail' ministrant.id %}">{{ ministrant.birthname }} {{ ministrant.surename}}</a></h2>
+            <p class="article-content">datum narození: {{ ministrant.birth_date|date:"d. F Y"  }}</p>
           </div>
         </article>
+      {% endif %}
     {% endfor %}
     {% if is_paginated %}
 

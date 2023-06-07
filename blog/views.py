@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
@@ -10,6 +11,9 @@ from django.views.generic import (
 )
 from .models import Ministrant
 from .forms import MinistrantForm
+
+from io import BytesIO
+from reportlab.pdfgen import canvas
 
 
 def home(request):
@@ -85,3 +89,35 @@ def about(request):
 
 def page_not_found(request, exception):
     return render(request, '404.html', {'title': 'Page Not Found :('})
+
+
+# class MinistrantPDFGenerator(LoginRequiredMixin, UserPassesTestMixin):
+#     model = Ministrant
+
+def generate_pdf(request, pk):
+    ministrant = Ministrant.objects.get(pk=pk)
+
+    # Create a file-like buffer to receive PDF data
+    buffer = BytesIO()
+
+    # Create the PDF object, using the BytesIO buffer as its "file"
+    p = canvas.Canvas(buffer)
+
+    # Set up the PDF content
+    p.setFont("Helvetica", 12)
+    p.drawString(100, 700, "Birthname: {}".format(ministrant.birthname))
+    p.drawString(100, 680, "Surename: {}".format(ministrant.surename))
+    p.drawString(100, 660, "Birth Date: {}".format(ministrant.birth_date))
+    # Add more fields as needed
+
+    # Close the PDF object cleanly, and we're done
+    p.showPage()
+    p.save()
+
+    # File buffer rewind
+    buffer.seek(0)
+
+    # Generate the response as a PDF file
+    response = HttpResponse(buffer, content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="ministrant.pdf"'
+    return response

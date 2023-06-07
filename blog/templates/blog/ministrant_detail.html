@@ -10,11 +10,19 @@
           <div>
             <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'ministrant-update' object.id %}">Update</a>
             <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'ministrant-delete' object.id %}">Delete</a>
+            <a class="btn btn-info btn-sm mt-1 mb-1" href="{% url 'ministrant-pdf-generate' object.id %}">Generate PDF</a>
           </div>
         {% endif %}
       </div>
-      <h2 class="article-title">{{ object.birthname }}</h2>
-      <p class="article-content">{{ object.surename }}</p>
+      <h2 class="article-title">{{ object.birthname }} {{ object.surename}}</h2>
+      <p class="article-content">{{ object.birth_date }}</p>
+      <p class="article-content">{{ object.address }}</p>
+      <p class="article-content">{{ object.town }}</p>
+      <p class="article-content">{{ object.town_zip }}</p>
+      <p class="article-content">{{ object.insurance }}</p>
+      <p class="article-content">{{ object.parrent }}</p>
+      <p class="article-content">{{ object.parrents_phone }}</p>
+      <p class="article-content">{{ object.parrents_email }}</p>
     </div>
   </article>
 {% endblock content %}
