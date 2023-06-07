@@ -53,17 +53,17 @@ class Ministrant(models.Model):
         return reverse('ministrant-detail', kwargs={'pk': self.pk})
 
 
-    # zdravotní pojišťovna	
-    # Trpí dítě nějakou přecitlivělostí, alergií, astmatem? Pokud ano, jakou? (popište včetně projevů a alergenů)	
-    # Trpí dítě nějakou trvalou závažnou chorobou, jakou? (epilepsie, cukrovka, apod.)	
-    # Užívá Vaše dítě trvale nebo v době konání tábora nějaké léky? Pokud ano, uveďte dávkování. (co, kdy, kolik)	
-    # Setkalo se dítě v době dvou týdnů před začátkem tábora s nějakou infekční chorobou?	
-    # Má dítě nějaké pohybové omezení? Pokud ano, jaké?	
-    # Jiné sdělení (pomočování, různé druhy fóbií, činností nebo jídla, kterým se dítě vyhýbá, hyperaktivity, zvýšená náladovost, specifické rady nebo prosby):	
-    # Prohlašuji, že mé dítě: 	
-    # Jméno a příjmení zákonného zástupce	
-    # Telefon na zákonného zástupce	
-    # E - mail na zákonného zástupce	
-    # E-mail účastníka - nepovinné	
-    # Telefon účastníka - nepovinné	
-    # Velikost trička	dle zákona č. 101/2000 Sb., o ochraně osobních údajů; EU 2016/679
+# zdravotní pojišťovna
+# Trpí dítě nějakou přecitlivělostí, alergií, astmatem? Pokud ano, jakou? (popište včetně projevů a alergenů)
+# Trpí dítě nějakou trvalou závažnou chorobou, jakou? (epilepsie, cukrovka, apod.)
+# Užívá Vaše dítě trvale nebo v době konání tábora nějaké léky? Pokud ano, uveďte dávkování. (co, kdy, kolik)
+# Setkalo se dítě v době dvou týdnů před začátkem tábora s nějakou infekční chorobou?
+# Má dítě nějaké pohybové omezení? Pokud ano, jaké?
+# Jiné sdělení (pomočování, různé druhy fóbií, činností nebo jídla, kterým se dítě vyhýbá, hyperaktivity, zvýšená náladovost, specifické rady nebo prosby):
+# Prohlašuji, že mé dítě:
+# Jméno a příjmení zákonného zástupce
+# Telefon na zákonného zástupce
+# E - mail na zákonného zástupce
+# E-mail účastníka - nepovinné
+# Telefon účastníka - nepovinné
+# Velikost trička	dle zákona č. 101/2000 Sb., o ochraně osobních údajů; EU 2016/67
