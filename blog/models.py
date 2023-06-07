@@ -3,18 +3,25 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
 
+from django.core.validators import RegexValidator
 
-class Post(models.Model):
-    title = models.CharField(max_length=100)
-    content = models.TextField()
-    date_posted = models.DateTimeField(default=timezone.now)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.title
+INSURANCES = [
+    ('111', 'VZP'),
+    ('211', 'VZP'),
+]
 
-    def get_absolute_url(self):
-        return reverse('post-detail', kwargs={'pk': self.pk})
+
+class PhoneField(models.CharField):
+    phone_regex = RegexValidator(
+        regex=r'^\+?1?\d{12,15}$',
+        message="Phone number must be entered in the format: '+999999999999'. Up to 15 digits allowed."
+    )
+
+    def __init__(self, *args, **kwargs):
+        kwargs['max_length'] = 15
+        kwargs['validators'] = [self.phone_regex]
+        super().__init__(*args, **kwargs)
 
 
 class Ministrant(models.Model):
@@ -26,14 +33,19 @@ class Ministrant(models.Model):
     town = models.CharField(max_length=100)
     town_zip = models.CharField(max_length=100)
 
+    insurance = models.CharField(max_length=3, choices=INSURANCES)
+
+    parrent = models.CharField(max_length=100)
+    parrents_phone = PhoneField(max_length=100)
+    parrents_email = models.EmailField(max_length=100, blank=True)
+
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.birthname + ' ' + self.surename
+        return self.surename + ' ' + self.birthname
 
     def get_absolute_url(self):
         return reverse('ministrant-detail', kwargs={'pk': self.pk})
-
 
 
     # zdravotní pojišťovna	
