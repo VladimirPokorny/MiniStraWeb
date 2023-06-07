@@ -11,8 +11,8 @@ class DateInput(forms.DateInput):
 class MinistrantForm(ModelForm):
     class Meta:
         model = Ministrant
-        # fields = ['birthname', 'surename', 'birth_date', 'address', 'town', 'town_zip', 'insurance', 'parrent', 'parrents_phone', 'parrents_email']
-        fields = ['parrents_phone', 'parrents_email']
+        fields = ['birthname', 'surename', 'birth_date', 'address', 'town', 'town_zip', 'insurance', 'parrent', 'parrents_phone', 'parrents_email']
+        # fields = ['parrents_phone', 'parrents_email']
         widgets = {
             'birth_date': DateInput(),
         }

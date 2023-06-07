@@ -7,8 +7,13 @@ from django.core.validators import RegexValidator
 
 
 INSURANCES = [
-    ('111', 'VZP'),
-    ('211', 'VZP'),
+    ('111', '111: VZP'),
+    ('201', '201: Vojenská zdravotní pojišťovna České republiky'),
+    ('205', '205: Česká průmyslová zdravotní pojišťovna'),
+    ('207', '207: Oborová zdravotní pojišťovna zaměstnanců bank, pojišťoven a stavebnictví'),
+    ('209', '209: Zaměstnanecká pojišťovna Škoda'),
+    ('211', '211: Zdravotní pojišťovna ministerstva vnitra České republiky'),
+    ('213', '213: RBP, zdravotní pojišťovna'),
 ]
 
 
