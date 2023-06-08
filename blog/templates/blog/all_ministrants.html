@@ -1,101 +1,127 @@
 {% extends "blog/base.html" %}
 {% block content %}
 <table class="table">
-    <thead class="thead-light">
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Jméno</th>
-          <th scope="col">Příjmení</th>
-          <th scope="col">Adresa</th>
-          <th scope="col">Město</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for ministrant in ministrants %}
-          {% if user.is_superuser %}
-          <tr class="ministrant-row" data-ministrant-id="{{ ministrant.birthname }} {{ ministrant.surname }}">
-            <th scope="row">{{ ministrant.id }}</th>
-            <td>{{ ministrant.birthname }}</td>
-            <td>{{ ministrant.surname }}</td>
-            <td>{{ ministrant.address }}</td>
-            <td>{{ ministrant.town }}</td>
-          </tr>
-          {% endif %}
-        {% endfor %}
-    </tbody>
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Jméno</th>
+      <th scope="col">Příjmení</th>
+      <th scope="col">Platba</th>
+      <th scope="col">věk na táboře</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for ministrant in ministrants %}
+      {% if user.is_superuser%}
+      <tr class="ministrant-row" data-ministrant-id="{{ ministrant.id }}">
+        <th scope="row">{{ ministrant.id }}</th>
+        <td>{{ ministrant.birthname }}</td>
+        <td>{{ ministrant.surname }}</td>
+        {% if ministrant.paid == True %}
+          <td>✔️</td>
+        {% elif ministrant.paid == False %}
+          <td>❌</td>
+        {% endif %}
+        <td>{{ ministrant.birth_date|timesince:now }}</td>
+      </tr>
+      <tr class="details-row collapse" id="ministrant-details-{{ ministrant.id }}">
+        <td colspan="6">
+          <div class="card">
+            <div class="card-header">
+              <h3>{{ ministrant.birthname }} {{ ministrant.surname }}</h3>
+            </div>
+            <div class="card-body">
+              <p class="card-text">
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <th scope="row">Birthname</th>
+                      <td>{{ ministrant.birthname }}</td>
+                    </tr>
+                    <tr>
+                      <th>Surname</th>
+                      <td>{{ ministrant.surname }}</td>
+                    </tr>
+                    <tr>
+                      <th>Birth Date</th>
+                      <td>{{ ministrant.birth_date }}</td>
+                    </tr>
+                    <tr>
+                      <th>Address</th>
+                      <td>{{ ministrant.address }}</td>
+                    </tr>
+                    <tr>
+                      <th>Town</th>
+                      <td>{{ ministrant.town }}</td>
+                    </tr>
+                    <tr>
+                      <th>Town Zip</th>
+                      <td>{{ ministrant.town_zip }}</td>
+                    </tr>
+                    <tr>
+                      <th>Insurance</th>
+                      <td>{{ ministrant.insurance }}</td>
+                    </tr>
+                    <tr>
+                      <th>Alergy</th>
+                      {% if ministrant.alergy == '' %}
+                        <td>❌</td>
+                      {% else %}
+                        <td>{{ ministrant.alergy }}</td>
+                      {% endif %}
+                    </tr>
+                    <tr>
+                      <th>Swimming</th>
+                      {% if ministrant.swimming == True %}
+                        <td>✔️</td>
+                      {% elif ministrant.swimming == False %}
+                        <td>❌</td>
+                      {% endif %}
+                    </tr>
+                    <tr>
+                      <th>Parent</th>
+                      <td>{{ ministrant.parrent }}</td>
+                    </tr>
+                    <tr>
+                      <th>Parent's Phone</th>
+                      <td>{{ ministrant.parrents_phone }}</td>
+                    </tr>
+                    <tr>
+                      <th>Parent's Email</th>
+                      <td>{{ ministrant.parrents_email }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </p>
+            </div>
+          </div>
+        </td>
+      </tr>
+      {% endif %}
+    {% endfor %}
+  </tbody>
 </table>
 
-<div id="detailsContainer"></div>
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   $(document).ready(function() {
-    $('.ministrant-row').on('click', function() {
-      var ministrantId = $(this).data('ministrant-id');
-      showDetails(ministrantId);
-    });
+    var currentExpandedRow = null;
     
-    function showDetails(ministrantId) {
-      // Make an AJAX request or fetch data using ministrantId
-      // Replace the code below with your logic to retrieve the detailed information
+    $('.ministrant-row').on('click', function() {
+      var detailsRow = $(this).next('.details-row');
+      var expandButton = $(this).find('.expand-button');
       
-      // Example code to display details in the detailsContainer
-      var detailsContainer = $('#detailsContainer');
-      detailsContainer.html(`
-        <div class="card" style="width: 36rem;">
-          <div class="card-body">
-            <h5 class="card-title">Ministrant ` + ministrantId + ` Details</h5>
-            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" class="card-link">Card link</a>
-            <a href="#" class="card-link">Another link</a>
-          </div>
-        </div>
-      `);
+      if (currentExpandedRow && currentExpandedRow[0] !== detailsRow[0]) {
+        currentExpandedRow.collapse('hide');
+        currentExpandedRow.prev('.ministrant-row').find('.expand-button').removeClass('expanded');
+      }
       
-      // detailsContainer.html("<h3>Ministrant Details</h3>" +
-      //   "<p>Ministrant ID: " + ministrantId + "</p>" +
-      //   "<p>Additional details: Lorem ipsum dolor sit amet.</p>");
-    }
+      detailsRow.collapse('toggle');
+      expandButton.toggleClass('expanded');
+      
+      currentExpandedRow = detailsRow;
+    });
   });
 </script>
+
 {% endblock content %}
-
-
-<!-- <div id="detailsContainer"></div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-  $(document).ready(function() {
-    $('.ministrant-row').on('click', function() {
-      var ministrantId = $(this).data('ministrant-id');
-      showDetails(ministrantId);
-    });
-    
-    function showDetails(ministrantId) {
-      $.ajax({
-        url: '/ministrant-details/' + ministrantId + '/',
-        type: 'GET',
-        dataType: 'json',
-        success: function(data) {
-          var detailsContainer = $('#detailsContainer');
-          detailsContainer.html(`
-            <div class="card" style="width: 18rem;">
-              <div class="card-body">
-                  <h5 class="card-title">${data.birthname} ${data.surname}</h5>
-                  <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" class="card-link">Card link</a>
-                  <a href="#" class="card-link">Another link</a>
-              </div>
-            </div>
-          `);
-        },
-        error: function(error) {
-          console.log(error);
-        }
-      });
-    }
-  });
-</script>
--->

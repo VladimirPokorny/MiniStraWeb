@@ -1,28 +1,89 @@
 {% extends "blog/base.html" %}
 {% block content %}
   <article class="media content-section">
-    <img class="rounded-circle article-img" src="{{ object.author.profile.image.url }}">
     <div class="media-body">
       <div class="article-metadata">
-
+        <h1 class="article-title">{{ object.birthname }} {{ object.surname }}</h1>
         <small class="text-muted">{{ object.time_stamp|date:"F d, Y" }}</small>
         {% if object.author == user or user.is_superuser%}
           <div>
             <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'ministrant-update' object.id %}">Update</a>
             <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'ministrant-delete' object.id %}">Delete</a>
             <a class="btn btn-info btn-sm mt-1 mb-1" href="{% url 'ministrant-pdf-generate' object.id %}">Generate PDF</a>
+            
+            {% if object.paid == True %}
+              <div class="alert alert-success" role="alert">
+                Přihláška is Paid
+              </div>
+            {% elif object.paid == False %}
+              <div class="alert alert-danger" role="alert">
+                Přihláška is not Paid
+              </div>
+            {% endif %}
           </div>
         {% endif %}
       </div>
-      <h2 class="article-title">{{ object.birthname }} {{ object.surname}}</h2>
-      <p class="article-content">{{ object.birth_date }}</p>
-      <p class="article-content">{{ object.address }}</p>
-      <p class="article-content">{{ object.town }}</p>
-      <p class="article-content">{{ object.town_zip }}</p>
-      <p class="article-content">{{ object.insurance }}</p>
-      <p class="article-content">{{ object.parrent }}</p>
-      <p class="article-content">{{ object.parrents_phone }}</p>
-      <p class="article-content">{{ object.parrents_email }}</p>
+      <table class="table">
+        <tbody>
+          <tr>
+            <th>Birthname</th>
+            <td>{{ object.birthname }}</td>
+          </tr>
+          <tr>
+            <th>Surname</th>
+            <td>{{ object.surname }}</td>
+          </tr>
+          <tr>
+            <th>Birth Date</th>
+            <td>{{ object.birth_date }}</td>
+          </tr>
+          <tr>
+            <th>Address</th>
+            <td>{{ object.address }}</td>
+          </tr>
+          <tr>
+            <th>Town</th>
+            <td>{{ object.town }}</td>
+          </tr>
+          <tr>
+            <th>Town Zip</th>
+            <td>{{ object.town_zip }}</td>
+          </tr>
+          <tr>
+            <th>Insurance</th>
+            <td>{{ object.insurance }}</td>
+          </tr>
+          <tr>
+            <th>Alergy</th>
+            {% if object.alergy == '' %}
+              <td>❌</td>
+            {% else %}
+              <td>{{ object.alergy }}</td>
+            {% endif %}
+          </tr>
+          <tr>
+            <th>Swimming</th>
+            {% if object.swimming == True %}
+              <td>✔️</td>
+            {% elif object.swimming == False %}
+              <td>❌</td>
+            {% endif %}
+          </tr>
+          <tr>
+            <th>Parent</th>
+            <td>{{ object.parrent }}</td>
+          </tr>
+          <tr>
+            <th>Parent's Phone</th>
+            <td>{{ object.parrents_phone }}</td>
+          </tr>
+          <tr>
+            <th>Parent's Email</th>
+            <td>{{ object.parrents_email }}</td>
+          </tr>
+        </tbody>
+      </table>
+      
     </div>
   </article>
 {% endblock content %}

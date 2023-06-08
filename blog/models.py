@@ -39,10 +39,14 @@ class Ministrant(models.Model):
     town_zip = models.CharField(max_length=100)
 
     insurance = models.CharField(max_length=3, choices=INSURANCES)
+    alergy = models.TextField(max_length=1000, blank=True)
+    swimming = models.BooleanField(default=False)
 
     parrent = models.CharField(max_length=100)
     parrents_phone = PhoneField(max_length=100)
     parrents_email = models.EmailField(max_length=100, blank=True)
+
+    paid = models.BooleanField(default=False)
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
