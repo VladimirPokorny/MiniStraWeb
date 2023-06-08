@@ -23,8 +23,10 @@
       <tr class="details-row collapse" id="ministrant-details-{{ ministrant.id }}">
         <td colspan="6">
           <div class="card">
+            <div class="card-header">
+              {{ ministrant.birthname }} {{ ministrant.surname }}
+            </div>
             <div class="card-body">
-              <h5 class="card-title">{{ ministrant.birthname }} {{ ministrant.surname }}</h5>
               <p class="card-text">
                 <table>
                   <tr>
@@ -74,13 +76,23 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   $(document).ready(function() {
+    var currentExpandedRow = null;
+    
     $('.ministrant-row').on('click', function() {
       var detailsRow = $(this).next('.details-row');
       var expandButton = $(this).find('.expand-button');
       
+      if (currentExpandedRow && currentExpandedRow[0] !== detailsRow[0]) {
+        currentExpandedRow.collapse('hide');
+        currentExpandedRow.prev('.ministrant-row').find('.expand-button').removeClass('expanded');
+      }
+      
       detailsRow.collapse('toggle');
       expandButton.toggleClass('expanded');
+      
+      currentExpandedRow = detailsRow;
     });
   });
 </script>
+
 {% endblock content %}

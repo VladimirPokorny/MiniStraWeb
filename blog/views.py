@@ -81,7 +81,7 @@ class AllMinistrantListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['now'] = datetime.now()
+        context['now'] = datetime(2023, 7, 23)
         return context
 
 
