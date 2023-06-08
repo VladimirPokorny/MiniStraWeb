@@ -10,7 +10,7 @@
               <small class="text-muted">{{ ministrant.time_stamp|date:"F d, Y" }}</small>
             </div>
             <h2><a class="article-title" href="{% url 'ministrant-detail' ministrant.id %}">{{ ministrant.birthname }}</a></h2>
-            <p class="article-content">{{ ministrant.surename }}</p>
+            <p class="article-content">{{ ministrant.surname }}</p>
           </div>
         </article>
     {% endfor %}

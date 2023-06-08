@@ -7,30 +7,95 @@
           <th scope="col">Jméno</th>
           <th scope="col">Příjmení</th>
           <th scope="col">Adresa</th>
+          <th scope="col">Město</th>
         </tr>
-      </thead>
-      <tbody>
+    </thead>
+    <tbody>
         {% for ministrant in ministrants %}
-          {% if user.is_superuser%}
-            <tr>
-              <th scope="row"></th>
-              <td>{{ ministrant.birthname }}</td>
-              <td>{{ ministrant.surename }}</td>
-              <td>{{ ministrant.address }}</td>
-            </tr>
-
-
-                <!-- <article class="media content-section">
-                    <div class="media-body">
-                    <div class="article-metadata">
-                        <small class="text-muted">Přihláška podána dne {{ ministrant.time_stamp|date:"d. F Y" }}</small>
-                    </div>
-                    <h2><a class="article-title" href="{% url 'ministrant-detail' ministrant.id %}">{{ ministrant.birthname }} {{ ministrant.surename}}</a></h2>
-                    <p class="article-content">datum narození: {{ ministrant.birth_date|date:"d. F Y"  }}</p>
-                    </div>
-                </article> -->
-            {% endif %}
+          {% if user.is_superuser %}
+          <tr class="ministrant-row" data-ministrant-id="{{ ministrant.birthname }} {{ ministrant.surname }}">
+            <th scope="row">{{ ministrant.id }}</th>
+            <td>{{ ministrant.birthname }}</td>
+            <td>{{ ministrant.surname }}</td>
+            <td>{{ ministrant.address }}</td>
+            <td>{{ ministrant.town }}</td>
+          </tr>
+          {% endif %}
         {% endfor %}
     </tbody>
 </table>
+
+<div id="detailsContainer"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('.ministrant-row').on('click', function() {
+      var ministrantId = $(this).data('ministrant-id');
+      showDetails(ministrantId);
+    });
+    
+    function showDetails(ministrantId) {
+      // Make an AJAX request or fetch data using ministrantId
+      // Replace the code below with your logic to retrieve the detailed information
+      
+      // Example code to display details in the detailsContainer
+      var detailsContainer = $('#detailsContainer');
+      detailsContainer.html(`
+        <div class="card" style="width: 36rem;">
+          <div class="card-body">
+            <h5 class="card-title">Ministrant ` + ministrantId + ` Details</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="#" class="card-link">Card link</a>
+            <a href="#" class="card-link">Another link</a>
+          </div>
+        </div>
+      `);
+      
+      // detailsContainer.html("<h3>Ministrant Details</h3>" +
+      //   "<p>Ministrant ID: " + ministrantId + "</p>" +
+      //   "<p>Additional details: Lorem ipsum dolor sit amet.</p>");
+    }
+  });
+</script>
 {% endblock content %}
+
+
+<!-- <div id="detailsContainer"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('.ministrant-row').on('click', function() {
+      var ministrantId = $(this).data('ministrant-id');
+      showDetails(ministrantId);
+    });
+    
+    function showDetails(ministrantId) {
+      $.ajax({
+        url: '/ministrant-details/' + ministrantId + '/',
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+          var detailsContainer = $('#detailsContainer');
+          detailsContainer.html(`
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                  <h5 class="card-title">${data.birthname} ${data.surname}</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  <a href="#" class="card-link">Card link</a>
+                  <a href="#" class="card-link">Another link</a>
+              </div>
+            </div>
+          `);
+        },
+        error: function(error) {
+          console.log(error);
+        }
+      });
+    }
+  });
+</script>
+-->

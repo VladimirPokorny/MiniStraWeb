@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('time_stamp', models.DateTimeField(default=django.utils.timezone.now)),
                 ('birthname', models.CharField(max_length=100)),
-                ('surename', models.CharField(max_length=100)),
+                ('surname', models.CharField(max_length=100)),
                 ('birth_date', models.DateField()),
                 ('address', models.CharField(max_length=100)),
                 ('town', models.CharField(max_length=100)),

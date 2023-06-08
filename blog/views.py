@@ -49,7 +49,7 @@ class MinistrantDetailView(DetailView):
 class MinistrantCreateView(LoginRequiredMixin, CreateView):
     model = Ministrant
     form_class = MinistrantForm
-    # fields = ['birthname', 'surename', 'birth_date', 'address', 'town', 'town_zip']
+    # fields = ['birthname', 'surname', 'birth_date', 'address', 'town', 'town_zip']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -113,7 +113,7 @@ def generate_pdf(request, pk):
     # Set up the PDF content
     p.setFont("Helvetica", 12)
     p.drawString(100, 700, "Birthname: {}".format(ministrant.birthname))
-    p.drawString(100, 680, "Surename: {}".format(ministrant.surename))
+    p.drawString(100, 680, "Surename: {}".format(ministrant.surname))
     p.drawString(100, 660, "Birth Date: {}".format(ministrant.birth_date))
     # Add more fields as needed
 

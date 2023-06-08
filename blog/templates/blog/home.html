@@ -9,7 +9,7 @@
               
               <small class="text-muted">Přihláška podána dne {{ ministrant.time_stamp|date:"d. F Y" }}</small>
             </div>
-            <h2><a class="article-title" href="{% url 'ministrant-detail' ministrant.id %}">{{ ministrant.birthname }} {{ ministrant.surename}}</a></h2>
+            <h2><a class="article-title" href="{% url 'ministrant-detail' ministrant.id %}">{{ ministrant.birthname }} {{ ministrant.surname}}</a></h2>
             <p class="article-content">datum narození: {{ ministrant.birth_date|date:"d. F Y"  }}</p>
           </div>
         </article>

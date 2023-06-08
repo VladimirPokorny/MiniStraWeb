@@ -14,7 +14,7 @@ class DateInput(forms.DateInput):
 class MinistrantForm(ModelForm):
     class Meta:
         model = Ministrant
-        fields = ['birthname', 'surename', 'birth_date', 'address', 'town', 'town_zip', 'insurance', 'parrent', 'parrents_phone', 'parrents_email']
+        fields = ['birthname', 'surname', 'birth_date', 'address', 'town', 'town_zip', 'insurance', 'parrent', 'parrents_phone', 'parrents_email']
         widgets = {
             'birth_date': DateInput(),
         }
@@ -28,7 +28,7 @@ class MinistrantForm(ModelForm):
 
 # time_stamp = models.DateTimeField(default=timezone.now)
 # birthname = models.CharField(max_length=100)
-# surename = models.CharField(max_length=100)
+# surname = models.CharField(max_length=100)
 # birth_date = models.DateField()
 # address = models.CharField(max_length=100)
 # town = models.CharField(max_length=100)

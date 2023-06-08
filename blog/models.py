@@ -32,7 +32,7 @@ class PhoneField(models.CharField):
 class Ministrant(models.Model):
     time_stamp = models.DateTimeField(default=timezone.now)
     birthname = models.CharField(max_length=100)
-    surename = models.CharField(max_length=100)
+    surname = models.CharField(max_length=100)
     birth_date = models.DateField()
     address = models.CharField(max_length=100)
     town = models.CharField(max_length=100)
@@ -52,7 +52,7 @@ class Ministrant(models.Model):
 
         :return: A string representing the object.
         """
-        return self.surename + ' ' + self.birthname
+        return self.surname + ' ' + self.birthname
 
     def get_absolute_url(self) -> str:
         """
