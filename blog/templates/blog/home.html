@@ -2,11 +2,10 @@
 {% block content %}
     {% for ministrant in ministrants %}
       {% if ministrant.author == user or user.is_superuser%}
-        <article class="media content-section">
-          <img class="rounded-circle article-img" src="{{ ministrant.author.profile.image.url }}">
-          <div class="media-body">
+        <article class="d-flex content-section">
+          <img class="flex-shrink-0 rounded-circle article-img" src="{{ ministrant.author.profile.image.url }}">
+          <div class="flex-grow-1 ms-3">
             <div class="article-metadata">
-              
               <small class="text-muted">Přihláška podána dne {{ ministrant.time_stamp|date:"d. F Y" }}</small>
             </div>
             <h2><a class="article-title" href="{% url 'ministrant-detail' ministrant.id %}">{{ ministrant.birthname }} {{ ministrant.surname}}</a></h2>
