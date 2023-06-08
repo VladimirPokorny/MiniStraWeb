@@ -15,6 +15,8 @@ from .forms import MinistrantForm
 from io import BytesIO
 from reportlab.pdfgen import canvas
 
+from datetime import datetime
+
 
 def home(request):
     context = {
@@ -74,9 +76,13 @@ class MinistrantUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 class AllMinistrantListView(ListView):
     model = Ministrant
-    template_name = 'blog/all_ministrants.html'  # <app>/<model>_<viewtype>.html
+    template_name = 'blog/all_ministrants.html'
     context_object_name = 'ministrants'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['now'] = datetime.now()
+        return context
 
 
 class MinistrantDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
