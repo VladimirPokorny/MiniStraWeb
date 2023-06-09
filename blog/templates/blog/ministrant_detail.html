@@ -4,21 +4,56 @@
     <div class="media-body">
       <div class="article-metadata">
         <h1 class="article-title">{{ object.birthname }} {{ object.surname }}</h1>
-        <small class="text-muted">{{ object.time_stamp|date:"F d, Y" }}</small>
-        {% if object.author == user or user.is_superuser%}
+        <small class="text-muted">Přihláška vyplněna dne: {{ object.time_stamp|date:"d. F Y H:i" }}</small>
+        {% if object.author == user or user.is_superuser %}
           <div>
             <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'ministrant-update' object.id %}">Update</a>
             <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'ministrant-delete' object.id %}">Delete</a>
             <a class="btn btn-info btn-sm mt-1 mb-1" href="{% url 'ministrant-pdf-generate' object.id %}">Generate PDF</a>
             
             {% if object.paid == True %}
-              <div class="alert alert-success" role="alert">
+              <div class="alert alert-success mt-1 mb-1" role="alert">
                 Přihláška is Paid
               </div>
             {% elif object.paid == False %}
-              <div class="alert alert-danger" role="alert">
-                Přihláška is not Paid
+            <div class="alert alert-danger mt-1 mb-1" role="alert">
+              Přihláška is not Paid
+
+              <button class="btn btn-success btn-sm collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDetails" aria-expanded="false" aria-controls="collapseDetails">
+                Zaplatit
+              </button>
+              <div class="collapse" id="collapseDetails">
+                <div class="card card-body mt-2">
+                  <div class="card-header">
+                    <h5 class="card-title">Platební údaje</h5>
+                  </div>
+                  <div class="card-body">
+                    <div class="container text-left">
+                      <div class="row">
+                        <div class="col">
+                          <table class="table">
+                            <tr>
+                              <td>Číslo účtu:</td>
+                              <td>123456789/1234</td>
+                            </tr>
+                            <tr>
+                              <td>Částka:</td>
+                              <td>2300 Kč</td>
+                            </tr>
+                            <tr>
+                              <td>Variabilní symbol:</td>
+                              <td>20230{{ object.id }}</td>
+                            </tr>
+                          </table>
+                        </div>
+                        <div class="col">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
+            </div>
             {% endif %}
           </div>
         {% endif %}
@@ -54,7 +89,7 @@
             <td>{{ object.insurance }}</td>
           </tr>
           <tr>
-            <th>Alergy</th>
+            <th>Allergy</th>
             {% if object.alergy == '' %}
               <td>❌</td>
             {% else %}
