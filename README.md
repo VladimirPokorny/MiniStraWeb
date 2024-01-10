@@ -4,14 +4,34 @@ An open source project summer camp administartion. The main purpose is to have a
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-After cloning the repository, create a virtual environment and install the requirements:
+The project uses Python 3.11. After cloning the repository, create a virtual environment and install the requirements:
 
 ```bash
-$ python3 -m venv .venv
-$ source venv/bin/activate
-$ pip install -r requirements.txt
+python3 -m venv .venv
+source venv/bin/activate
+pip install -r requirements.txt
 ```
 
+or if you are using windows:
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+After succesfull instalaion of the requirements, you should make migrations and migrate:
+
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+Then you can run the server:
+
+```bash
+python manage.py runserver
+```
 
 
 
