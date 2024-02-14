@@ -2,6 +2,11 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
+import qrcode
+import os
+from django.conf import settings
+from io import BytesIO
+from django.core.files.base import ContentFile
 
 from django.core.validators import RegexValidator
 
@@ -31,24 +36,25 @@ class PhoneField(models.CharField):
 
 class Ministrant(models.Model):
     time_stamp = models.DateTimeField(default=timezone.now)
-    birthname = models.CharField(max_length=100)
-    surname = models.CharField(max_length=100)
-    birth_date = models.DateField()
-    address = models.CharField(max_length=100)
-    town = models.CharField(max_length=100)
-    town_zip = models.CharField(max_length=100)
+    birthname = models.CharField(max_length=100, blank=True)
+    surname = models.CharField(max_length=100, blank=True)
+    birth_date = models.DateField(blank=True, default=timezone.now)
+    address = models.CharField(max_length=100, blank=True)
+    town = models.CharField(max_length=100, blank=True)
+    town_zip = models.CharField(max_length=100, blank=True)
 
-    insurance = models.CharField(max_length=3, choices=INSURANCES)
+    insurance = models.CharField(max_length=3, choices=INSURANCES, blank=True)
     alergy = models.TextField(max_length=1000, blank=True)
     swimming = models.BooleanField(default=False)
 
-    parrent = models.CharField(max_length=100)
-    parrents_phone = PhoneField(max_length=100)
+    parrent = models.CharField(max_length=100, blank=True)
+    parrents_phone = PhoneField(max_length=100, blank=True)
     parrents_email = models.EmailField(max_length=100, blank=True)
 
     paid = models.BooleanField(default=False)
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+    qr_paid_code = models.ImageField(upload_to='qr_codes', blank=True, null=True)
 
     def __str__(self) -> str:
         """
@@ -56,7 +62,7 @@ class Ministrant(models.Model):
 
         :return: A string representing the object.
         """
-        return self.surname + ' ' + self.birthname
+        return f'{self.surname} {self.birthname}'
 
     def get_absolute_url(self) -> str:
         """
@@ -68,6 +74,43 @@ class Ministrant(models.Model):
         :rtype: str
         """
         return reverse('ministrant-detail', kwargs={'pk': self.pk})
+
+    def generate_qr_paid_code(self):
+        ministrant = Ministrant.objects.get(pk=self.pk)
+
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            box_size=10,
+            border=4,
+        )
+
+        qr.add_data(ministrant.pk)
+        qr.make(fit=True)
+
+        img = qr.make_image(fill_color="black", back_color="white")
+
+        buf = BytesIO()
+        img.save(buf, format='PNG')
+
+        # Rewind the file.
+        buf.seek(0)
+
+        # Ensure the directory exists
+        os.makedirs(os.path.join(settings.MEDIA_ROOT, 'qr_codes'), exist_ok=True)
+
+        # Save QR code to the model
+        self.qr_paid_code.save(str(self.pk) + '.png', ContentFile(buf.getvalue()), save=True)
+
+        return img
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)  # Call the "real" save() method.
+        if not self.qr_paid_code:
+            img = self.generate_qr_paid_code()
+            self.qr_paid_code = f'qr_codes/{self.pk}.png'
+            img.save(f'media/{self.qr_paid_code}')
+
 
 
 # zdravotní pojišťovna
