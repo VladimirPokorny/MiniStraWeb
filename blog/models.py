@@ -9,6 +9,7 @@ from io import BytesIO
 from django.core.files.base import ContentFile
 
 from django.core.validators import RegexValidator
+from camp.models import BankAccount, SummerCampInfo
 
 
 INSURANCES = [
@@ -85,7 +86,7 @@ class Ministrant(models.Model):
             border=4,
         )
 
-        qr.add_data(ministrant.pk)
+        qr.add_data(self.generate_qr_data())
         qr.make(fit=True)
 
         img = qr.make_image(fill_color="black", back_color="white")
@@ -103,6 +104,13 @@ class Ministrant(models.Model):
         self.qr_paid_code.save(str(self.pk) + '.png', ContentFile(buf.getvalue()), save=True)
 
         return img
+    
+    def generate_qr_data(self):
+        bank_code = BankAccount.objects.first().bank_code
+        summer_camp_price = SummerCampInfo.objects.first().price
+
+        return f'SPD*1.0*ACC:{bank_code}*AM:{summer_camp_price}*CC:CZK*MSG:{self.pk}*X-VS:{self.pk}*X-KS:0308'
+
     
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)  # Call the "real" save() method.
