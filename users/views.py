@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
+from django.http import HttpResponseRedirect
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 
 
@@ -15,6 +17,11 @@ def register(request):
     else:
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
+
+@login_required
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect('/')
 
 
 @login_required
