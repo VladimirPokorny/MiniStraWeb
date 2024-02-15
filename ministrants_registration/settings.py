@@ -36,6 +36,7 @@ ALLOWED_HOSTS = [
 INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'users.apps.UsersConfig',
+    'camp.apps.SummerCampConfig',
     'crispy_forms',
     'crispy_bootstrap4',
     'django.contrib.admin',
