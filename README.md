@@ -1,10 +1,21 @@
 # Summer Camp Registration
-An open source project summer camp administartion. The main purpose is to have a web solution with form to register new children for summer camp. The project is written in Python 3 and Django. At this moment the project is still in development.
+An open source project summer camp administration. The main purpose is to have a web solution with a form to register new children for summer camp. The project is written in Python 3 and Django. The project is still under development at the moment.
 
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-The project uses Python 3.11. After cloning the repository, create a virtual environment and install the requirements:
+The project uses Python 3.11.
+
+### Run the Project with Docker
+You can run the project using Docker:
+
+```bash
+docker compose up --build -d
+```
+You can then access the project at `localhost:13003`. You can configure the port in `docker-compose.yml`.
+
+### Run the Project Manually
+Another way of running the project is to create a virtual environment and install the requirements:
 
 ```bash
 python3 -m venv .venv
@@ -21,7 +32,7 @@ python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-After succesfull instalaion of the requirements, you should make migrations and migrate:
+After succesfull instalation of the requirements, you should make migrations and migrate:
 
 ```bash
 python manage.py makemigrations
