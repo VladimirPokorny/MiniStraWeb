@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.core.validators import RegexValidator
 
 
-INSURANCES = [
+INSURANCE_COMPANIES = [
     ('111', '111: VZP'),
     ('201', '201: Vojenská zdravotní pojišťovna České republiky'),
     ('205', '205: Česká průmyslová zdravotní pojišťovna'),
@@ -19,8 +19,8 @@ INSURANCES = [
 
 class PhoneField(models.CharField):
     phone_regex = RegexValidator(
-        regex=r'^\+?1?\d{12,15}$',
-        message="Phone number must be entered in the format: '+999999999999'. Up to 15 digits allowed."
+        regex=r'^\+(?:\d{3}\s?){4}$',
+        message="Telefonní číslo musí být zadáno ve formátu: '+420 999 999 999'."
     )
 
     def __init__(self, *args, **kwargs):
@@ -38,7 +38,7 @@ class Ministrant(models.Model):
     town = models.CharField(max_length=100)
     town_zip = models.CharField(max_length=100)
 
-    insurance = models.CharField(max_length=3, choices=INSURANCES)
+    insurance = models.CharField(max_length=3, choices=INSURANCE_COMPANIES)
     alergy = models.TextField(max_length=1000, blank=True)
     swimming = models.BooleanField(default=False)
 

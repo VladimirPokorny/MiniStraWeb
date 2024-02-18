@@ -12,5 +12,7 @@ services:
     environment:
       - SECRET_KEY=${SECRET_KEY}
       - DEBUG_VALUE=${DEBUG_VALUE}
+    volumes:
+      - ./blog:/app/blog
 networks:
   default:

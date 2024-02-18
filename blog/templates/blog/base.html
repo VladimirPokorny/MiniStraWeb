@@ -13,37 +13,37 @@
     <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
 
     {% if title %}
-        <title>Django Blog - {{ title }}</title>
+        <title>Přihlašování na tábor - {{ title }}</title>
     {% else %}
-        <title>Django Blog</title>
+        <title>Přihlašování na tábor</title>
     {% endif %}
 </head>
 <body>
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
-          <a class="navbar-brand mr-4" href="{% url 'blog-home' %}">Django Blog</a>
+          <a class="navbar-brand mr-4" href="{% url 'blog-home' %}">Přihlašování na tábor</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarToggle">
             <div class="navbar-nav mr-auto">
-              <a class="nav-item nav-link" href="{% url 'blog-home' %}">Home</a>
-              <a class="nav-item nav-link" href="{% url 'blog-about' %}">About</a>
+              <a class="nav-item nav-link" href="{% url 'blog-home' %}">Domů</a>
+              <a class="nav-item nav-link" href="{% url 'blog-about' %}">Informace</a>
               {% if user.is_superuser %}
-                <a class="nav-item nav-link" href="{% url 'all-ministrants' %}">All Ministrants</a>
+                <a class="nav-item nav-link" href="{% url 'all-ministrants' %}">Přihlášení účastníci</a>
               {% endif %}
 
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav navbar-collapse collapse justify-content-end">
               {% if user.is_authenticated %}
-                <a class="nav-item nav-link" href="{% url 'ministrant-create' %}">New Ministrant</a>
-                <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
-                <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+                <a class="nav-item nav-link" href="{% url 'ministrant-create' %}">Nová přihláška</a>
+                <a class="nav-item nav-link" href="{% url 'profile' %}">Profil</a>
+                <a class="nav-item nav-link" href="{% url 'logout' %}">Odhlásit</a>
               {% else %}
-                <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
-                <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+                <a class="nav-item nav-link" href="{% url 'login' %}">Přihlásit</a>
+                <a class="nav-item nav-link" href="{% url 'register' %}">Registrovat</a>
               {% endif %}
             </div>
           </div>

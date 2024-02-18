@@ -13,11 +13,11 @@
             
             {% if object.paid == True %}
               <div class="alert alert-success mt-1 mb-1" role="alert">
-                Přihláška is Paid
+                Přihláška je zaplacena
               </div>
             {% elif object.paid == False %}
             <div class="alert alert-danger mt-1 mb-1" role="alert">
-              Přihláška is not Paid
+              Přihláška není zaplacena
 
               <button class="btn btn-success btn-sm collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDetails" aria-expanded="false" aria-controls="collapseDetails">
                 Zaplatit
@@ -61,35 +61,35 @@
       <table class="table">
         <tbody>
           <tr>
-            <th>Birthname</th>
+            <th>Jméno</th>
             <td>{{ object.birthname }}</td>
           </tr>
           <tr>
-            <th>Surname</th>
+            <th>Příjmení</th>
             <td>{{ object.surname }}</td>
           </tr>
           <tr>
-            <th>Birth Date</th>
+            <th>Datum narození</th>
             <td>{{ object.birth_date }}</td>
           </tr>
           <tr>
-            <th>Address</th>
+            <th>Adresa</th>
             <td>{{ object.address }}</td>
           </tr>
           <tr>
-            <th>Town</th>
+            <th>Obec</th>
             <td>{{ object.town }}</td>
           </tr>
           <tr>
-            <th>Town Zip</th>
+            <th>PSČ</th>
             <td>{{ object.town_zip }}</td>
           </tr>
           <tr>
-            <th>Insurance</th>
+            <th>Pojišťovna</th>
             <td>{{ object.insurance }}</td>
           </tr>
           <tr>
-            <th>Allergy</th>
+            <th>Alergie</th>
             {% if object.alergy == '' %}
               <td>❌</td>
             {% else %}
@@ -97,7 +97,7 @@
             {% endif %}
           </tr>
           <tr>
-            <th>Swimming</th>
+            <th>Plavec</th>
             {% if object.swimming == True %}
               <td>✔️</td>
             {% elif object.swimming == False %}
@@ -105,15 +105,15 @@
             {% endif %}
           </tr>
           <tr>
-            <th>Parent</th>
+            <th>Rodič</th>
             <td>{{ object.parent }}</td>
           </tr>
           <tr>
-            <th>Parent's Phone</th>
+            <th>Telefonní číslo rodiče</th>
             <td>{{ object.parents_phone }}</td>
           </tr>
           <tr>
-            <th>Parent's Email</th>
+            <th>E-mail rodiče</th>
             <td>{{ object.parents_email }}</td>
           </tr>
         </tbody>
