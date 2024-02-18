@@ -42,9 +42,9 @@ class Ministrant(models.Model):
     alergy = models.TextField(max_length=1000, blank=True)
     swimming = models.BooleanField(default=False)
 
-    parrent = models.CharField(max_length=100)
-    parrents_phone = PhoneField(max_length=100)
-    parrents_email = models.EmailField(max_length=100, blank=True)
+    parent = models.CharField(max_length=100)
+    parents_phone = PhoneField(max_length=100)
+    parents_email = models.EmailField(max_length=100, blank=True)
 
     paid = models.BooleanField(default=False)
 

@@ -18,4 +18,6 @@ ENV SECRET_KEY=${SECRET_KEY}
 ARG DEBUG_VALUE
 ENV DEBUG_VALUE=${DEBUG_VALUE}
 WORKDIR /app
+RUN python manage.py makemigrations
+RUN python manage.py migrate
 CMD python manage.py runserver 0.0.0.0:80

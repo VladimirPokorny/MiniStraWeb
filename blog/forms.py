@@ -14,7 +14,7 @@ class DateInput(forms.DateInput):
 class MinistrantForm(ModelForm):
     class Meta:
         model = Ministrant
-        fields = ['birthname', 'surname', 'birth_date', 'address', 'town', 'town_zip', 'insurance', 'alergy', 'swimming', 'parrent', 'parrents_phone', 'parrents_email',]
+        fields = ['birthname', 'surname', 'birth_date', 'address', 'town', 'town_zip', 'insurance', 'alergy', 'swimming', 'parent', 'parents_phone', 'parents_email',]
         widgets = {
             'birth_date': DateInput(),
         }
@@ -36,8 +36,8 @@ class MinistrantForm(ModelForm):
 
 # insurance = models.CharField(max_length=3, choices=INSURANCES)
 
-# parrent = models.CharField(max_length=100)
-# parrents_phone = models.CharField(max_length=100)
-# parrents_email = models.CharField(max_length=100)
+# parent = models.CharField(max_length=100)
+# parents_phone = models.CharField(max_length=100)
+# parents_email = models.CharField(max_length=100)
 
 # author = models.ForeignKey(User, on_delete=models.CASCADE)
