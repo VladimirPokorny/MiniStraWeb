@@ -118,11 +118,16 @@ class Ministrant(models.Model):
 
         return img
     
-    def generate_qr_data(self):
-        bank_code = BankAccount.objects.first().bank_code
+    def collect_qr_data(self):
+        prefix_number = BankAccount.objects.first().number
+        surfix_number = BankAccount.objects.first().bank_code
+    
+        account_number = f'{prefix_number}{surfix_number}' 
+        
         summer_camp_price = SummerCampInfo.objects.first().price
+        qr_msg = unidecode(f'{self.surname}_{self.birthname}')
 
-        return f'SPD*1.0*ACC:{bank_code}*AM:{summer_camp_price}*CC:CZK*MSG:{self.pk}*X-VS:{self.pk}*X-KS:0308'
+        return f'SPD*1.0*ACC:{account_number}*AM:{summer_camp_price}*CC:CZK*MSG:{qr_msg}*X-VS:{self.variable_symbol}*X-KS:0308'
 
     
     def save(self, *args, **kwargs):
