@@ -132,10 +132,10 @@ class Ministrant(models.Model):
     
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)  # Call the "real" save() method.
-        if not self.qr_paid_code:
-            img = self.generate_qr_paid_code()
-            self.qr_paid_code = f'qr_codes/{self.pk}.png'
-            img.save(f'media/{self.qr_paid_code}')
+        if not self.qr_pay_code:
+            img = self.generate_qr_pay_code()
+            self.qr_pay_code = f'qr_codes/{self.unicode_name}.png'
+            img.save(f'media/{self.qr_pay_code}')
 
 
 
