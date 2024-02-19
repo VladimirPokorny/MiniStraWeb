@@ -1,0 +1,93 @@
+\documentclass{article}
+\usepackage[czech]{babel}
+\usepackage{geometry}
+\geometry{
+    a4paper,
+    left=25mm,
+    right=25mm,
+    top=30mm,
+    bottom=40mm 
+}
+ \usepackage{ifthen}
+
+ \newcommand{\HugeText}[2][]{
+    \begin{center}
+    \ifthenelse{\equal{#1}{l}}{\raggedright}{}
+    \ifthenelse{\equal{#1}{r}}{\raggedleft}{}
+    \huge{\textbf{#2}}
+    \end{center}
+}
+
+\newcommand{\LargeText}[2][]{
+    \begin{center}
+    \ifthenelse{\equal{#1}{l}}{\raggedright}{}
+    \ifthenelse{\equal{#1}{r}}{\raggedleft}{}
+    \Large{\textbf{#2}}
+    \end{center}
+}
+
+\newcommand{\centeredNormalText}[1]{
+    \begin{center}
+        #1
+    \end{center}
+}
+
+\begin{document}
+
+\HugeText{Výpis přihlášky na ministrantský tábor 2024}
+
+
+\centeredNormalText{přihláška vyplněna: {{ministrant.time_stamp}}}
+
+\vspace{2em}
+
+\LargeText[l]{Základní informace:}
+
+\large{
+    \begin{table}[h!]
+        \begin{tabular}{ll}
+            Příjmení a jméno účastníka:     & \textbf{ {{ ministrant.surname }} {{ ministrant.birthname }} } \\
+            Datum narození:                 & {{ministrant.birth_date}} \\
+            Zdravotní pojišťovna:           & {{ministrant.insurance}} \\
+            Trvalé bydliště:                & {{ministrant.address}} {{ministrant.town}} {{ministrant.town_zip}} \\
+                                            & \\
+            {% if ministrant.swimming %}
+                \textbf{Dovede plavat}      &  \\
+            {% else %}
+                \textbf{Nedovede plavat}    & \\
+            {% endif %}
+                                            & \\
+            Alergie:                        & {{ministrant.allergies}} \\
+            Trvalé choroby:                 & ne \\
+            Pohybová omezení:               & ne \\
+            Léky:                           & ne \\
+            Doplňující informace:           & ne \\
+        \end{tabular}
+    \end{table}
+}
+
+\LargeText[l]{Zákonný zástupce:}
+
+\large{
+    \begin{table}[h!]
+        \begin{tabular}{ll}
+            jméno: & {{ministrant.parent}} \\
+            telefon: & {{ministrant.parents_phone}} \\
+            E-mail: & {{ministrant.parents_email}} \\
+        \end{tabular}
+    \end{table}
+}
+
+\LargeText[l]{Kontaktní informace na účastníka:}
+
+\large{
+    \begin{table}[h!]
+        \begin{tabular}{ll}
+            Telefon: & {{ministrant.phone}} \\
+            e-mail: & {{ministrant.email}} \\
+            Velikost trička účastníka: & {{ministrant.shirt_size}} \\
+        \end{tabular}
+    \end{table}
+}
+
+\end{document}
