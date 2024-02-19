@@ -34,15 +34,15 @@
                                 <table class="table">
                             <tr>
                               <td>Číslo účtu:</td>
-                              <td>123456789/1234</td>
+                              <td>{{ bank_account.number }}/{{ bank_account.bank_code }}</td>
                             </tr>
                             <tr>
                               <td>Částka:</td>
-                              <td>2300 Kč</td>
+                              <td>{{ summer_camp_price }},- Kč</td>
                             </tr>
                             <tr>
                               <td>Variabilní symbol:</td>
-                              <td>20230{{ object.id }}</td>
+                              <td>{{ ministrant.variable_symbol }}</td>
                             </tr>
                           </table>
                         </div>
