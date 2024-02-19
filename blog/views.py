@@ -9,7 +9,7 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
-from .models import Ministrant
+from .models import Ministrant, BankAccount, SummerCampInfo
 from .forms import MinistrantForm
 
 from io import BytesIO
@@ -46,6 +46,12 @@ class UserMinistrantListView(ListView):
 
 class MinistrantDetailView(DetailView):
     model = Ministrant
+
+    def ministrant_detail(request, pk):
+        ministrant = get_object_or_404(Ministrant, pk=pk)
+        bank_account = BankAccount.objects.first()
+        summer_camp_price = SummerCampInfo.objects.first().price
+        return render(request, 'ministrant_detail.html', {'ministrant': ministrant, 'bank_account': bank_account, 'summer_camp_price': summer_camp_price})
 
 
 class MinistrantCreateView(LoginRequiredMixin, CreateView):
