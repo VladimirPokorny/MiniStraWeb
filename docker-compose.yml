@@ -1,0 +1,18 @@
+version: '3.7'
+
+services:
+  ministraweb-app:
+    image: ministraweb
+    build: .
+    ports:
+      - "13003:80"
+    expose:
+      - 80
+    restart: always
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - DEBUG_VALUE=${DEBUG_VALUE}
+    volumes:
+      - ./blog:/app/blog
+networks:
+  default:

@@ -7,7 +7,7 @@
       <th scope="col">Jméno</th>
       <th scope="col">Příjmení</th>
       <th scope="col">Platba</th>
-      <th scope="col">věk na táboře</th>
+      <th scope="col">Věk na táboře</th>
     </tr>
   </thead>
   <tbody>
@@ -35,35 +35,35 @@
                 <table class="table">
                   <tbody>
                     <tr>
-                      <th scope="row">Birthname</th>
+                      <th scope="row">Jméno</th>
                       <td>{{ ministrant.birthname }}</td>
                     </tr>
                     <tr>
-                      <th>Surname</th>
+                      <th>Příjmení</th>
                       <td>{{ ministrant.surname }}</td>
                     </tr>
                     <tr>
-                      <th>Birth Date</th>
+                      <th>Datum narození</th>
                       <td>{{ ministrant.birth_date }}</td>
                     </tr>
                     <tr>
-                      <th>Address</th>
+                      <th>Adresa</th>
                       <td>{{ ministrant.address }}</td>
                     </tr>
                     <tr>
-                      <th>Town</th>
+                      <th>Obec</th>
                       <td>{{ ministrant.town }}</td>
                     </tr>
                     <tr>
-                      <th>Town Zip</th>
+                      <th>PSČ</th>
                       <td>{{ ministrant.town_zip }}</td>
                     </tr>
                     <tr>
-                      <th>Insurance</th>
+                      <th>Pojišťovna</th>
                       <td>{{ ministrant.insurance }}</td>
                     </tr>
                     <tr>
-                      <th>Alergy</th>
+                      <th>Alergie</th>
                       {% if ministrant.alergy == '' %}
                         <td>❌</td>
                       {% else %}
@@ -71,7 +71,7 @@
                       {% endif %}
                     </tr>
                     <tr>
-                      <th>Swimming</th>
+                      <th>Plavec</th>
                       {% if ministrant.swimming == True %}
                         <td>✔️</td>
                       {% elif ministrant.swimming == False %}
@@ -79,16 +79,16 @@
                       {% endif %}
                     </tr>
                     <tr>
-                      <th>Parent</th>
-                      <td>{{ ministrant.parrent }}</td>
+                      <th>Rodič</th>
+                      <td>{{ ministrant.parent }}</td>
                     </tr>
                     <tr>
-                      <th>Parent's Phone</th>
-                      <td>{{ ministrant.parrents_phone }}</td>
+                      <th>Telefonní číslo rodiče</th>
+                      <td>{{ ministrant.parents_phone }}</td>
                     </tr>
                     <tr>
-                      <th>Parent's Email</th>
-                      <td>{{ ministrant.parrents_email }}</td>
+                      <th>E-mail rodiče</th>
+                      <td>{{ ministrant.parents_email }}</td>
                     </tr>
                   </tbody>
                 </table>
