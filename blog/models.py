@@ -94,14 +94,16 @@ class Ministrant(models.Model):
     def get_actual_camp_year(self) -> int:
         return SummerCampInfo.objects.first().start_date.year
 
+    def generate_qr_pay_code(self):
         qr = qrcode.QRCode(
-            version=1,
+            version=None,
             error_correction=qrcode.constants.ERROR_CORRECT_L,
             box_size=10,
-            border=4,
+            border=1,
         )
+        print(self.collect_qr_data())
 
-        qr.add_data(self.generate_qr_data())
+        qr.add_data(self.collect_qr_data())
         qr.make(fit=True)
 
         img = qr.make_image(fill_color="black", back_color="white")
@@ -111,12 +113,8 @@ class Ministrant(models.Model):
 
         # Rewind the file.
         buf.seek(0)
-
-        # Ensure the directory exists
         os.makedirs(os.path.join(settings.MEDIA_ROOT, 'qr_codes'), exist_ok=True)
-
-        # Save QR code to the model
-        self.qr_paid_code.save(str(self.pk) + '.png', ContentFile(buf.getvalue()), save=True)
+        self.qr_pay_code.save(f'{self.unicode_name}.png', ContentFile(buf.getvalue()), save=True)
 
         return img
     
