@@ -13,7 +13,7 @@ from django.core.validators import RegexValidator
 from camp.models import BankAccount, SummerCampInfo
 
 
-INSURANCES = [
+INSURANCE_COMPANIES = [
     ('111', '111: VZP'),
     ('201', '201: Vojenská zdravotní pojišťovna České republiky'),
     ('205', '205: Česká průmyslová zdravotní pojišťovna'),
@@ -26,8 +26,8 @@ INSURANCES = [
 
 class PhoneField(models.CharField):
     phone_regex = RegexValidator(
-        regex=r'^\+?1?\d{12,15}$',
-        message="Phone number must be entered in the format: '+999999999999'. Up to 15 digits allowed."
+        regex=r'^\+(?:\d{3}\s?){4}$',
+        message="Telefonní číslo musí být zadáno ve formátu: '+420 999 999 999'."
     )
 
     def __init__(self, *args, **kwargs):
@@ -45,13 +45,13 @@ class Ministrant(models.Model):
     town = models.CharField(max_length=100, blank=True)
     town_zip = models.CharField(max_length=100, blank=True)
 
-    insurance = models.CharField(max_length=3, choices=INSURANCES, blank=True)
+    insurance = models.CharField(max_length=3, choices=INSURANCE_COMPANIES)
     alergy = models.TextField(max_length=1000, blank=True)
     swimming = models.BooleanField(default=False)
 
-    parrent = models.CharField(max_length=100, blank=True)
-    parrents_phone = PhoneField(max_length=100, blank=True)
-    parrents_email = models.EmailField(max_length=100, blank=True)
+    parent = models.CharField(max_length=100, blank=True)
+    parents_phone = PhoneField(max_length=100, blank=True)
+    parents_email = models.EmailField(max_length=100, blank=True)
 
     phone = PhoneField(max_length=100, blank=True)
     email = models.EmailField(max_length=100, blank=True)
