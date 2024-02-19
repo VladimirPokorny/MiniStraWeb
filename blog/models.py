@@ -7,6 +7,7 @@ import os
 from django.conf import settings
 from io import BytesIO
 from django.core.files.base import ContentFile
+from unidecode import unidecode
 
 from django.core.validators import RegexValidator
 from camp.models import BankAccount, SummerCampInfo
@@ -39,7 +40,7 @@ class Ministrant(models.Model):
     time_stamp = models.DateTimeField(default=timezone.now)
     birthname = models.CharField(max_length=100, blank=True)
     surname = models.CharField(max_length=100, blank=True)
-    birth_date = models.DateField(blank=True, default=timezone.now)
+    birth_date = models.DateField(blank=True)
     address = models.CharField(max_length=100, blank=True)
     town = models.CharField(max_length=100, blank=True)
     town_zip = models.CharField(max_length=100, blank=True)
