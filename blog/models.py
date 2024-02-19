@@ -91,8 +91,8 @@ class Ministrant(models.Model):
     def unicode_name(self) -> str:
         return unidecode(f'{self.surname}_{self.birthname}')
 
-    def generate_qr_paid_code(self):
-        ministrant = Ministrant.objects.get(pk=self.pk)
+    def get_actual_camp_year(self) -> int:
+        return SummerCampInfo.objects.first().start_date.year
 
         qr = qrcode.QRCode(
             version=1,
