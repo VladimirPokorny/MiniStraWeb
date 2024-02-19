@@ -59,7 +59,8 @@ class Ministrant(models.Model):
     paid = models.BooleanField(default=False)
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    qr_paid_code = models.ImageField(upload_to='qr_codes', blank=True, null=True)
+    qr_pay_code = models.ImageField(upload_to='qr_codes', blank=True, null=True)
+    unicode_name = models.CharField(max_length=100, blank=False)
 
     def __str__(self) -> str:
         """
