@@ -53,6 +53,9 @@ class Ministrant(models.Model):
     parrents_phone = PhoneField(max_length=100, blank=True)
     parrents_email = models.EmailField(max_length=100, blank=True)
 
+    phone = PhoneField(max_length=100, blank=True)
+    email = models.EmailField(max_length=100, blank=True)
+    shirt_size = models.CharField(max_length=100, blank=True)
     paid = models.BooleanField(default=False)
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
