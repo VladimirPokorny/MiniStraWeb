@@ -56,6 +56,8 @@ class Ministrant(models.Model):
     phone = PhoneField(max_length=100, blank=True)
     email = models.EmailField(max_length=100, blank=True)
     shirt_size = models.CharField(max_length=100, blank=True)
+
+    variable_symbol = models.CharField(max_length=100, blank=True)
     paid = models.BooleanField(default=False)
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -80,6 +82,14 @@ class Ministrant(models.Model):
         :rtype: str
         """
         return reverse('ministrant-detail', kwargs={'pk': self.pk})
+    
+    @property
+    def variable_symbol(self):
+        return f'{self.get_actual_camp_year()}{self.pk:04d}'
+
+    @property
+    def unicode_name(self) -> str:
+        return unidecode(f'{self.surname}_{self.birthname}')
 
     def generate_qr_paid_code(self):
         ministrant = Ministrant.objects.get(pk=self.pk)
