@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
@@ -11,16 +10,20 @@ from django.views.generic import (
 )
 from .models import Ministrant, BankAccount, SummerCampInfo
 from .forms import MinistrantForm
-
-from io import BytesIO
-from reportlab.pdfgen import canvas
-
 from datetime import datetime
 
 
 def home(request):
+    if request.user.is_authenticated:
+        if request.user.is_superuser:
+            ministrants = Ministrant.objects.all()
+        else:
+            ministrants = Ministrant.objects.filter(created_by=request.user)
+    else:
+        ministrants = Ministrant.objects.none()
+
     context = {
-        'ministrants': Ministrant.objects.all()
+        'ministrants': ministrants
     }
     return render(request, 'blog/home.html', context)
 
@@ -103,8 +106,3 @@ def about(request):
 
 def page_not_found(request, exception):
     return render(request, '404.html', {'title': 'Page Not Found :('})
-
-
-# class MinistrantPDFGenerator(LoginRequiredMixin, UserPassesTestMixin):
-#     model = Ministrant
-
