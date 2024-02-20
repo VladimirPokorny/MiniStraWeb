@@ -43,7 +43,10 @@ class MinistrantForm(ModelForm):
             'swimming': 'plavec',
             'parent': 'rodič',
             'parents_phone': 'telefonní číslo rodiče',
-            'parents_email': 'e-mail rodiče'
+            'parents_email': 'e-mail rodiče',
+            'phone': 'telefonní číslo účastníka',
+            'email': 'e-mail účastníka',
+            'shirt_size': 'velikost trička'
         }
         widgets = {
             'birth_date': DateInput(),
@@ -55,20 +58,3 @@ class MinistrantForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Odeslat', css_class='btn btn-outline-info'))
-
-
-# time_stamp = models.DateTimeField(default=timezone.now)
-# birthname = models.CharField(max_length=100)
-# surname = models.CharField(max_length=100)
-# birth_date = models.DateField()
-# address = models.CharField(max_length=100)
-# town = models.CharField(max_length=100)
-# town_zip = models.CharField(max_length=100)
-
-# insurance = models.CharField(max_length=3, choices=INSURANCES)
-
-# parent = models.CharField(max_length=100)
-# parents_phone = models.CharField(max_length=100)
-# parents_email = models.CharField(max_length=100)
-
-# author = models.ForeignKey(User, on_delete=models.CASCADE)
