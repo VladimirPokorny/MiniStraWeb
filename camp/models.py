@@ -15,15 +15,13 @@ class SummerCampInfo(models.Model):
         # Check if an instance already exists
         existing_instance = SummerCampInfo.objects.first()
 
-        if existing_instance:
-            # If an instance exists, update its fields
+        if existing_instance and existing_instance != self:
             existing_instance.name = self.name
             existing_instance.start_date = self.start_date
             existing_instance.end_date = self.end_date
             existing_instance.price = self.price
-            existing_instance.save()
+            super(SummerCampInfo, existing_instance).save(*args, **kwargs)
         else:
-            # If no instance exists, create a new one
             super().save(*args, **kwargs)
 
     class Meta:
@@ -33,7 +31,7 @@ class SummerCampInfo(models.Model):
 class BankAccount(models.Model):
     name = models.CharField(max_length=100)
     number = models.IntegerField()
-    bank_code = models.IntegerField()
+    bank_code = models.CharField(max_length=4)
     variable_symbol_prefix = models.IntegerField()
 
     def __str__(self):
@@ -43,15 +41,13 @@ class BankAccount(models.Model):
         # Check if an instance already exists
         existing_instance = BankAccount.objects.first()
 
-        if existing_instance:
-            # If an instance exists, update its fields
+        if existing_instance and existing_instance != self:
             existing_instance.name = self.name
             existing_instance.number = self.number
             existing_instance.bank_code = self.bank_code
             existing_instance.variable_symbol_prefix = self.variable_symbol_prefix
-            existing_instance.save()
+            super(BankAccount, existing_instance).save(*args, **kwargs)
         else:
-            # If no instance exists, create a new one
             super().save(*args, **kwargs)
 
     class Meta:
