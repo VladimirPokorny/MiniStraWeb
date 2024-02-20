@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import (
+    home,
     MinistrantListView,
     MinistrantDetailView,
     MinistrantCreateView,
@@ -14,7 +15,7 @@ from utils.printout_form_generator import PrintOutFormGenerator
 from . import views
 
 urlpatterns = [
-    path('', MinistrantListView.as_view(), name='blog-home'),
+    path('', home, name='blog-home'),
     path('user/<str:username>', UserMinistrantListView.as_view(), name='user-ministrants'),
     path('ministrant/<int:pk>/', MinistrantDetailView.ministrant_detail, name='ministrant-detail'),
     path('ministrant/new/', MinistrantCreateView.as_view(), name='ministrant-create'),
