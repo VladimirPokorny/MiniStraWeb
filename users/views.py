@@ -2,11 +2,11 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponsePermanentRedirect, HttpResponse
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 
 
-def register(request):
+def register(request) -> (HttpResponseRedirect | HttpResponsePermanentRedirect):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
@@ -19,13 +19,13 @@ def register(request):
     return render(request, 'users/register.html', {'form': form})
 
 @login_required
-def logout_view(request):
+def logout_view(request) -> HttpResponseRedirect:
     logout(request)
     return HttpResponseRedirect('/')
 
 
 @login_required
-def profile(request):
+def profile(request) -> HttpResponse:
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
         p_form = ProfileUpdateForm(request.POST,
