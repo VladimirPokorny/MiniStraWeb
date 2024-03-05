@@ -30,7 +30,7 @@ class PhoneField(models.CharField):
         message="Telefonní číslo musí být zadáno ve formátu: '+420 999 999 999'."
     )
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         kwargs['max_length'] = 15
         kwargs['validators'] = [self.phone_regex]
         super().__init__(*args, **kwargs)
@@ -84,17 +84,16 @@ class Ministrant(models.Model):
         return reverse('ministrant-detail', kwargs={'pk': self.pk})
     
     @property
-    def variable_symbol(self):
-        return f'{self.get_actual_camp_year()}{self.pk:04d}'
+    def variable_symbol(self) -> str:
+        actual_camp_year = SummerCampInfo.objects.first().start_date.year
+        return f'{actual_camp_year}{self.pk:04d}'
 
     @property
     def unicode_name(self) -> str:
         return unidecode(f'{self.surname}_{self.birthname}')
 
-    def get_actual_camp_year(self) -> int:
-        return SummerCampInfo.objects.first().start_date.year
 
-    def generate_qr_pay_code(self):
+    def generate_qr_pay_code(self) -> qrcode.image.pil.PilImage:
         qr = qrcode.QRCode(
             version=None,
             error_correction=qrcode.constants.ERROR_CORRECT_L,
@@ -118,7 +117,7 @@ class Ministrant(models.Model):
 
         return img
     
-    def collect_qr_data(self):
+    def collect_qr_data(self) -> str:
         prefix_number = BankAccount.objects.first().number
         surfix_number = BankAccount.objects.first().bank_code
     
@@ -130,12 +129,14 @@ class Ministrant(models.Model):
         return f'SPD*1.0*ACC:{account_number}*AM:{summer_camp_price}*CC:CZK*MSG:{qr_msg}*X-VS:{self.variable_symbol}*X-KS:0308'
 
     
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs) -> None:
         super().save(*args, **kwargs)  # Call the "real" save() method.
         if not self.qr_pay_code:
             img = self.generate_qr_pay_code()
-            self.qr_pay_code = f'qr_codes/{self.unicode_name}.png'
+            filename = f'{self.unicode_name}.png'
+            self.qr_pay_code = os.path.join('qr_codes', filename)
             img.save(f'media/{self.qr_pay_code}')
+        return None
 
 
 

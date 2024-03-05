@@ -36,10 +36,10 @@ class BankAccount(models.Model):
     bank_code = models.IntegerField()
     variable_symbol_prefix = models.IntegerField()
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
     
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs) -> None:
         # Check if an instance already exists
         existing_instance = BankAccount.objects.first()
 
@@ -53,6 +53,8 @@ class BankAccount(models.Model):
         else:
             # If no instance exists, create a new one
             super().save(*args, **kwargs)
+        
+        return None
 
     class Meta:
         verbose_name = "Bank Account"
