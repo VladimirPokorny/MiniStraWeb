@@ -36,6 +36,7 @@ ALLOWED_HOSTS = [
 INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'users.apps.UsersConfig',
+    'camp.apps.SummerCampConfig',
     'crispy_forms',
     'crispy_bootstrap4',
     'django.contrib.admin',
@@ -61,7 +62,10 @@ ROOT_URLCONF = 'ministrants_registration.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'utils', 'templates'),
+            os.path.join(BASE_DIR, 'blog', 'templates', 'blog'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

@@ -3,19 +3,19 @@
   <article class="media content-section">
     <div class="media-body">
       <div class="article-metadata">
-        <h1 class="article-title">{{ object.birthname }} {{ object.surname }}</h1>
-        <small class="text-muted">Přihláška vyplněna dne: {{ object.time_stamp|date:"d. F Y H:i" }}</small>
-        {% if object.author == user or user.is_superuser %}
+        <h1 class="article-title">{{ ministrant.birthname }} {{ ministrant.surname }}</h1>
+        <small class="text-muted">Přihláška vyplněna dne: {{ ministrant.time_stamp|date:"d. F Y H:i" }}</small>
+        {% if ministrant.author == user or user.is_superuser %}
           <div>
-            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'ministrant-update' object.id %}">Update</a>
-            <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'ministrant-delete' object.id %}">Delete</a>
-            <a class="btn btn-info btn-sm mt-1 mb-1" href="{% url 'ministrant-pdf-generate' object.id %}">Generate PDF</a>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'ministrant-update' ministrant.id %}">Update</a>
+            <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'ministrant-delete' ministrant.id %}">Delete</a>
+            <a class="btn btn-info btn-sm mt-1 mb-1" href="{% url 'ministrant-pdf-generate' ministrant.id %}" target="_blank">Generate PDF</a>
             
-            {% if object.paid == True %}
+            {% if ministrant.paid == True %}
               <div class="alert alert-success mt-1 mb-1" role="alert">
                 Přihláška je zaplacena
               </div>
-            {% elif object.paid == False %}
+            {% elif ministrant.paid == False %}
             <div class="alert alert-danger mt-1 mb-1" role="alert">
               Přihláška není zaplacena
 
@@ -27,27 +27,28 @@
                   <div class="card-header">
                     <h5 class="card-title">Platební údaje</h5>
                   </div>
-                  <div class="card-body">
+                  <div class="card-body" style="overflow: auto;">
                     <div class="container text-left">
-                      <div class="row">
-                        <div class="col">
-                          <table class="table">
+                        <div class="row d-flex align-items-stretch"> <!-- Add d-flex align-items-stretch here -->
+                            <div class="col">
+                                <table class="table">
                             <tr>
                               <td>Číslo účtu:</td>
-                              <td>123456789/1234</td>
+                              <td>{{ bank_account.number }}/{{ bank_account.bank_code }}</td>
                             </tr>
                             <tr>
                               <td>Částka:</td>
-                              <td>2300 Kč</td>
+                              <td>{{ summer_camp_price }},- Kč</td>
                             </tr>
                             <tr>
                               <td>Variabilní symbol:</td>
-                              <td>20230{{ object.id }}</td>
+                              <td>{{ ministrant.variable_symbol }}</td>
                             </tr>
                           </table>
                         </div>
-                        <div class="col">
-                        </div>
+                        <div class="col d-flex align-items-start justify-content-center"> <!-- Change align-items-center to align-items-start -->
+                          <img src="{{ ministrant.qr_pay_code.url }}" alt="QR Code" style="max-height: 75%; margin-top: 0px;"> <!-- Add margin-top: -75px; -->
+                      </div>
                       </div>
                     </div>
                   </div>
@@ -62,59 +63,59 @@
         <tbody>
           <tr>
             <th>Jméno</th>
-            <td>{{ object.birthname }}</td>
+            <td>{{ ministrant.birthname }}</td>
           </tr>
           <tr>
             <th>Příjmení</th>
-            <td>{{ object.surname }}</td>
+            <td>{{ ministrant.surname }}</td>
           </tr>
           <tr>
             <th>Datum narození</th>
-            <td>{{ object.birth_date }}</td>
+            <td>{{ ministrant.birth_date }}</td>
           </tr>
           <tr>
             <th>Adresa</th>
-            <td>{{ object.address }}</td>
+            <td>{{ ministrant.address }}</td>
           </tr>
           <tr>
             <th>Obec</th>
-            <td>{{ object.town }}</td>
+            <td>{{ ministrant.town }}</td>
           </tr>
           <tr>
             <th>PSČ</th>
-            <td>{{ object.town_zip }}</td>
+            <td>{{ ministrant.town_zip }}</td>
           </tr>
           <tr>
             <th>Pojišťovna</th>
-            <td>{{ object.insurance }}</td>
+            <td>{{ ministrant.insurance }}</td>
           </tr>
           <tr>
             <th>Alergie</th>
-            {% if object.alergy == '' %}
+            {% if ministrant.alergy == '' %}
               <td>❌</td>
             {% else %}
-              <td>{{ object.alergy }}</td>
+              <td>{{ ministrant.alergy }}</td>
             {% endif %}
           </tr>
           <tr>
             <th>Plavec</th>
-            {% if object.swimming == True %}
+            {% if ministrant.swimming == True %}
               <td>✔️</td>
-            {% elif object.swimming == False %}
+            {% elif ministrant.swimming == False %}
               <td>❌</td>
             {% endif %}
           </tr>
           <tr>
             <th>Rodič</th>
-            <td>{{ object.parent }}</td>
+            <td>{{ ministrant.parent }}</td>
           </tr>
           <tr>
             <th>Telefonní číslo rodiče</th>
-            <td>{{ object.parents_phone }}</td>
+            <td>{{ ministrant.parents_phone }}</td>
           </tr>
           <tr>
             <th>E-mail rodiče</th>
-            <td>{{ object.parents_email }}</td>
+            <td>{{ ministrant.parents_email }}</td>
           </tr>
         </tbody>
       </table>

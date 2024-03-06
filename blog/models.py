@@ -2,8 +2,15 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
+import qrcode
+import os
+from django.conf import settings
+from io import BytesIO
+from django.core.files.base import ContentFile
+from unidecode import unidecode
 
 from django.core.validators import RegexValidator
+from camp.models import BankAccount, SummerCampInfo
 
 
 INSURANCE_COMPANIES = [
@@ -23,7 +30,7 @@ class PhoneField(models.CharField):
         message="Telefonní číslo musí být zadáno ve formátu: '+420 999 999 999'."
     )
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         kwargs['max_length'] = 15
         kwargs['validators'] = [self.phone_regex]
         super().__init__(*args, **kwargs)
@@ -31,24 +38,31 @@ class PhoneField(models.CharField):
 
 class Ministrant(models.Model):
     time_stamp = models.DateTimeField(default=timezone.now)
-    birthname = models.CharField(max_length=100)
-    surname = models.CharField(max_length=100)
-    birth_date = models.DateField()
-    address = models.CharField(max_length=100)
-    town = models.CharField(max_length=100)
-    town_zip = models.CharField(max_length=100)
+    birthname = models.CharField(max_length=100, blank=True)
+    surname = models.CharField(max_length=100, blank=True)
+    birth_date = models.DateField(blank=True)
+    address = models.CharField(max_length=100, blank=True)
+    town = models.CharField(max_length=100, blank=True)
+    town_zip = models.CharField(max_length=100, blank=True)
 
     insurance = models.CharField(max_length=3, choices=INSURANCE_COMPANIES)
     alergy = models.TextField(max_length=1000, blank=True)
     swimming = models.BooleanField(default=False)
 
-    parent = models.CharField(max_length=100)
-    parents_phone = PhoneField(max_length=100)
+    parent = models.CharField(max_length=100, blank=True)
+    parents_phone = PhoneField(max_length=100, blank=True)
     parents_email = models.EmailField(max_length=100, blank=True)
 
+    phone = PhoneField(max_length=100, blank=True)
+    email = models.EmailField(max_length=100, blank=True)
+    shirt_size = models.CharField(max_length=100, blank=True)
+
+    variable_symbol = models.CharField(max_length=100, blank=True)
     paid = models.BooleanField(default=False)
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+    qr_pay_code = models.ImageField(upload_to='qr_codes', blank=True, null=True)
+    unicode_name = models.CharField(max_length=100, blank=False)
 
     def __str__(self) -> str:
         """
@@ -56,7 +70,7 @@ class Ministrant(models.Model):
 
         :return: A string representing the object.
         """
-        return self.surname + ' ' + self.birthname
+        return f'{self.surname} {self.birthname}'
 
     def get_absolute_url(self) -> str:
         """
@@ -68,6 +82,62 @@ class Ministrant(models.Model):
         :rtype: str
         """
         return reverse('ministrant-detail', kwargs={'pk': self.pk})
+    
+    @property
+    def variable_symbol(self) -> str:
+        actual_camp_year = SummerCampInfo.objects.first().start_date.year
+        return f'{actual_camp_year}{self.pk:04d}'
+
+    @property
+    def unicode_name(self) -> str:
+        return unidecode(f'{self.surname}_{self.birthname}')
+
+
+    def generate_qr_pay_code(self) -> qrcode.image.pil.PilImage:
+        qr = qrcode.QRCode(
+            version=None,
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            box_size=10,
+            border=1,
+        )
+        print(self.collect_qr_data())
+
+        qr.add_data(self.collect_qr_data())
+        qr.make(fit=True)
+
+        img = qr.make_image(fill_color="black", back_color="white")
+
+        buf = BytesIO()
+        img.save(buf, format='PNG')
+
+        # Rewind the file.
+        buf.seek(0)
+        os.makedirs(os.path.join(settings.MEDIA_ROOT, 'qr_codes'), exist_ok=True)
+        self.qr_pay_code.save(f'{self.unicode_name}.png', ContentFile(buf.getvalue()), save=True)
+
+        return img
+    
+    def collect_qr_data(self) -> str:
+        prefix_number = BankAccount.objects.first().number
+        surfix_number = BankAccount.objects.first().bank_code
+    
+        account_number = f'{prefix_number}{surfix_number}' 
+        
+        summer_camp_price = SummerCampInfo.objects.first().price
+        qr_msg = unidecode(f'{self.surname}_{self.birthname}')
+
+        return f'SPD*1.0*ACC:{account_number}*AM:{summer_camp_price}*CC:CZK*MSG:{qr_msg}*X-VS:{self.variable_symbol}*X-KS:0308'
+
+    
+    def save(self, *args, **kwargs) -> None:
+        super().save(*args, **kwargs)  # Call the "real" save() method.
+        if not self.qr_pay_code:
+            img = self.generate_qr_pay_code()
+            filename = f'{self.unicode_name}.png'
+            self.qr_pay_code = os.path.join('qr_codes', filename)
+            img.save(f'media/{self.qr_pay_code}')
+        return None
+
 
 
 # zdravotní pojišťovna

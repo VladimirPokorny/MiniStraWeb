@@ -9,7 +9,7 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
-from .models import Ministrant
+from .models import Ministrant, BankAccount, SummerCampInfo
 from .forms import MinistrantForm
 
 from io import BytesIO
@@ -47,6 +47,12 @@ class UserMinistrantListView(ListView):
 class MinistrantDetailView(DetailView):
     model = Ministrant
 
+    def ministrant_detail(request, pk):
+        ministrant = get_object_or_404(Ministrant, pk=pk)
+        bank_account = BankAccount.objects.first()
+        summer_camp_price = SummerCampInfo.objects.first().price
+        return render(request, 'ministrant_detail.html', {'ministrant': ministrant, 'bank_account': bank_account, 'summer_camp_price': summer_camp_price})
+
 
 class MinistrantCreateView(LoginRequiredMixin, CreateView):
     model = Ministrant
@@ -61,11 +67,6 @@ class MinistrantCreateView(LoginRequiredMixin, CreateView):
 class MinistrantUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Ministrant
     form_class = MinistrantForm
-    # fields = ['title', 'content']
-
-    # def form_valid(self, form):
-    #     form.instance.author = self.request.user
-    #     return super().form_valid(form)
 
     def test_func(self):
         ministrant = self.get_object()
@@ -107,30 +108,3 @@ def page_not_found(request, exception):
 # class MinistrantPDFGenerator(LoginRequiredMixin, UserPassesTestMixin):
 #     model = Ministrant
 
-def generate_pdf(request, pk):
-    ministrant = Ministrant.objects.get(pk=pk)
-
-    # Create a file-like buffer to receive PDF data
-    buffer = BytesIO()
-
-    # Create the PDF object, using the BytesIO buffer as its "file"
-    p = canvas.Canvas(buffer)
-
-    # Set up the PDF content
-    p.setFont("Helvetica", 12)
-    p.drawString(100, 700, "Birthname: {}".format(ministrant.birthname))
-    p.drawString(100, 680, "Surename: {}".format(ministrant.surname))
-    p.drawString(100, 660, "Birth Date: {}".format(ministrant.birth_date))
-    # Add more fields as needed
-
-    # Close the PDF object cleanly, and we're done
-    p.showPage()
-    p.save()
-
-    # File buffer rewind
-    buffer.seek(0)
-
-    # Generate the response as a PDF file
-    response = HttpResponse(buffer, content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="ministrant.pdf"'
-    return response

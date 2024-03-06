@@ -14,7 +14,23 @@ class DateInput(forms.DateInput):
 class MinistrantForm(ModelForm):
     class Meta:
         model = Ministrant
-        fields = ['birthname', 'surname', 'birth_date', 'address', 'town', 'town_zip', 'insurance', 'alergy', 'swimming', 'parent', 'parents_phone', 'parents_email',]
+        fields = [
+            'birthname', 
+            'surname', 
+            'birth_date', 
+            'address', 
+            'town', 
+            'town_zip', 
+            'insurance', 
+            'alergy', 
+            'swimming', 
+            'parent', 
+            'parents_phone', 
+            'parents_email',
+            'phone',
+            'email',
+            'shirt_size'
+        ]
         labels = {
             'birthname': 'jméno',
             'surname': 'příjmení',
