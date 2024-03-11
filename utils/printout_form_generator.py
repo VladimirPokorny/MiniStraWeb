@@ -23,7 +23,7 @@ class PrintOutFormGenerator:
         directory = os.path.dirname(self.latex_path)
         os.makedirs(directory, exist_ok=True)
 
-        latex_empty_source = r'C:\Programming\MiniStraWeb\utils\templates\printout_form\printout_form.tex'
+        latex_empty_source = settings.TEMPLATES[0]['DIRS'][0] + r'\printout_form.tex'
         latex_source = render_to_string(latex_empty_source, {'ministrant': self.ministrant})
         
         with open(self.latex_path, 'w') as file:
