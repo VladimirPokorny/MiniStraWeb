@@ -5,6 +5,7 @@ from django.core.files.base import ContentFile
 import os
 from django.conf import settings
 from django.apps import apps
+from utils.iban_calculator import IBANCalculator
 
 
 class QRPayGenerator:
@@ -14,16 +15,13 @@ class QRPayGenerator:
         self.qr_pay_data = self.collect_qr_data()
     
     def collect_qr_data(self) -> str:
-        prefix_number = BankAccount.objects.first().number
-        surfix_number = BankAccount.objects.first().bank_code
-    
-        account_number = f'{prefix_number}{surfix_number}' 
+        iban = BankAccount.objects.first().iban
         
         summer_camp_price = SummerCampInfo.objects.first().price
         qr_msg = self.ministrant.unicode_name
         variable_symbol = self.ministrant.variable_symbol
 
-        return f'SPD*1.0*ACC:CZ9701000001157604670277*AM:{summer_camp_price}*CC:CZK*MSG:{qr_msg}*X-VS:{variable_symbol}*X-KS:0308'
+        return f'SPD*1.0*ACC:{iban}*AM:{summer_camp_price}*CC:CZK*MSG:{qr_msg}*X-VS:{variable_symbol}*X-KS:0308'
     
     def generate_qr_pay_code(self) -> qrcode.image:
         qr = qrcode.QRCode(

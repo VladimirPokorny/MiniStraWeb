@@ -1,4 +1,5 @@
 from django.db import models
+from utils.iban_calculator import IBANCalculator
 
 
 class SummerCampInfo(models.Model):
@@ -32,9 +33,11 @@ class SummerCampInfo(models.Model):
 
 class BankAccount(models.Model):
     name = models.CharField(max_length=100)
-    number = models.IntegerField()
-    bank_code = models.IntegerField()
+    account_number = models.IntegerField()
+    bank_code = models.CharField(max_length=100)
+    prefix_account_number = models.CharField(max_length=100)
     variable_symbol_prefix = models.IntegerField()
+    iban = models.CharField(max_length=100)
 
     def __str__(self) -> str:
         return self.name
@@ -42,6 +45,8 @@ class BankAccount(models.Model):
     def save(self, *args, **kwargs) -> None:
         # Check if an instance already exists
         existing_instance = BankAccount.objects.first()
+        iban_calculator = IBANCalculator('CZ', self.account_number, self.bank_code, self.prefix_account_number)
+        self.iban = iban_calculator.make_iban()
 
         if existing_instance:
             # If an instance exists, update its fields
