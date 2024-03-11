@@ -8,6 +8,7 @@ from django.conf import settings
 from io import BytesIO
 from django.core.files.base import ContentFile
 from unidecode import unidecode
+from utils.qr_pay_generator import QRPayGenerator
 
 from django.core.validators import RegexValidator
 from camp.models import BankAccount, SummerCampInfo
@@ -91,66 +92,13 @@ class Ministrant(models.Model):
     @property
     def unicode_name(self) -> str:
         return unidecode(f'{self.surname}_{self.birthname}')
-
-
-    def generate_qr_pay_code(self) -> qrcode.image:
-        qr = qrcode.QRCode(
-            version=None,
-            error_correction=qrcode.constants.ERROR_CORRECT_L,
-            box_size=10,
-            border=1,
-        )
-        print(self.collect_qr_data())
-
-        qr.add_data(self.collect_qr_data())
-        qr.make(fit=True)
-
-        img = qr.make_image(fill_color="black", back_color="white")
-
-        buf = BytesIO()
-        img.save(buf, format='PNG')
-
-        # Rewind the file.
-        buf.seek(0)
-        os.makedirs(os.path.join(settings.MEDIA_ROOT, 'qr_codes'), exist_ok=True)
-        self.qr_pay_code.save(f'{self.unicode_name}.png', ContentFile(buf.getvalue()), save=True)
-
-        return img
-    
-    def collect_qr_data(self) -> str:
-        prefix_number = BankAccount.objects.first().number
-        surfix_number = BankAccount.objects.first().bank_code
-    
-        account_number = f'{prefix_number}{surfix_number}' 
-        
-        summer_camp_price = SummerCampInfo.objects.first().price
-        qr_msg = unidecode(f'{self.surname}_{self.birthname}')
-
-        return f'SPD*1.0*ACC:{account_number}*AM:{summer_camp_price}*CC:CZK*MSG:{qr_msg}*X-VS:{self.variable_symbol}*X-KS:0308'
-
-    
+   
     def save(self, *args, **kwargs) -> None:
         super().save(*args, **kwargs)  # Call the "real" save() method.
+
         if not self.qr_pay_code:
-            img = self.generate_qr_pay_code()
+            img = QRPayGenerator(self.pk).generate_qr_pay_code()
             filename = f'{self.unicode_name}.png'
             self.qr_pay_code = os.path.join('qr_codes', filename)
             img.save(f'media/{self.qr_pay_code}')
         return None
-
-
-
-# zdravotní pojišťovna
-# Trpí dítě nějakou přecitlivělostí, alergií, astmatem? Pokud ano, jakou? (popište včetně projevů a alergenů)
-# Trpí dítě nějakou trvalou závažnou chorobou, jakou? (epilepsie, cukrovka, apod.)
-# Užívá Vaše dítě trvale nebo v době konání tábora nějaké léky? Pokud ano, uveďte dávkování. (co, kdy, kolik)
-# Setkalo se dítě v době dvou týdnů před začátkem tábora s nějakou infekční chorobou?
-# Má dítě nějaké pohybové omezení? Pokud ano, jaké?
-# Jiné sdělení (pomočování, různé druhy fóbií, činností nebo jídla, kterým se dítě vyhýbá, hyperaktivity, zvýšená náladovost, specifické rady nebo prosby):
-# Prohlašuji, že mé dítě:
-# Jméno a příjmení zákonného zástupce
-# Telefon na zákonného zástupce
-# E - mail na zákonného zástupce
-# E-mail účastníka - nepovinné
-# Telefon účastníka - nepovinné
-# Velikost trička	dle zákona č. 101/2000 Sb., o ochraně osobních údajů; EU 2016/67
