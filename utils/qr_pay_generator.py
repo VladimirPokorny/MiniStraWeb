@@ -5,14 +5,12 @@ from django.core.files.base import ContentFile
 import os
 from django.conf import settings
 from django.apps import apps
-from utils.iban_calculator import IBANCalculator
 
 
 class QRPayGenerator:
-    def __init__(self, pk: int) -> None:
-        Ministrant = apps.get_model('blog', 'Ministrant')
-        self.ministrant = Ministrant.objects.get(pk=pk)
-        self.qr_pay_data = self.collect_qr_data()
+    def __init__(self, ministrant) -> None:
+        self.ministrant = ministrant
+        self._qr_pay_data = None
     
     def collect_qr_data(self) -> str:
         iban = BankAccount.objects.first().iban
