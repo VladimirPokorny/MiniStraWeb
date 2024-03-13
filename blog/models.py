@@ -93,24 +93,16 @@ class Ministrant(models.Model):
     @property
     def unicode_name(self) -> str:
         return unidecode(f'{self.surname}_{self.birthname}')
-
-    @property
-    def qr_pay_code(self) -> PIL.Image:
-        if not self.qr_pay_code_path:
-            img = QRPayGenerator(self).generate_qr_pay_code()
-            filename = f'{self.unicode_name}.png'
-            self.qr_pay_code_path = os.path.join('qr_codes', filename)
-            img.save(f'media/{self.qr_pay_code_path}')
-        return self.qr_pay_code_path
-    
-
-   
+      
     def save(self, *args, **kwargs) -> None:
         super().save(*args, **kwargs)  # Call the "real" save() method.
 
-        # if not self.qr_pay_code:
-        #     img = QRPayGenerator(self.pk).generate_qr_pay_code()
-        #     filename = f'{self.unicode_name}.png'
-        #     self.qr_pay_code = os.path.join('qr_codes', filename)
-        #     img.save(f'media/{self.qr_pay_code}')
+        if not self.qr_pay_code:
+            img = QRPayGenerator(self).generate_qr_pay_code()
+            filename = f'{self.unicode_name}.png'
+            self.qr_pay_code = os.path.join('qr_codes', filename)
+            img.save(f'media/{self.qr_pay_code}')
+
+            super().save(*args, **kwargs)  # Call the "real" save() method.
+
         return None
