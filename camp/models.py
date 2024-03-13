@@ -33,11 +33,11 @@ class SummerCampInfo(models.Model):
 
 class BankAccount(models.Model):
     name = models.CharField(max_length=100)
+    prefix_account_number = models.IntegerField()
     account_number = models.IntegerField()
     bank_code = models.CharField(max_length=100)
-    prefix_account_number = models.CharField(max_length=100)
     variable_symbol_prefix = models.IntegerField()
-    iban = models.CharField(max_length=100)
+    iban = models.CharField(max_length=100, blank=True)
 
     def __str__(self) -> str:
         return self.name
@@ -50,11 +50,14 @@ class BankAccount(models.Model):
 
         if existing_instance:
             # If an instance exists, update its fields
-            existing_instance.name = self.name
-            existing_instance.number = self.number
-            existing_instance.bank_code = self.bank_code
-            existing_instance.variable_symbol_prefix = self.variable_symbol_prefix
-            existing_instance.save()
+            BankAccount.objects.filter(id=existing_instance.id).update(
+                name=self.name,
+                prefix_account_number=self.prefix_account_number,
+                account_number=self.account_number,
+                bank_code=self.bank_code,
+                variable_symbol_prefix=self.variable_symbol_prefix,
+                iban=self.iban
+            )
         else:
             # If no instance exists, create a new one
             super().save(*args, **kwargs)
