@@ -1,6 +1,5 @@
 from django.db import models
 from utils.iban_calculator import IBANCalculator
-import blog.models
 
 
 class SummerCampInfo(models.Model):
