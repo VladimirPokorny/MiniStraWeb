@@ -3,7 +3,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
 from .forms import MinistrantForm
-from .models import Ministrant, BankAccount, SummerCampInfo
+from .models import Ministrant
+from camp.models import SummerCampInfo, BankAccount
 
 from django.views.generic import (
     ListView,
