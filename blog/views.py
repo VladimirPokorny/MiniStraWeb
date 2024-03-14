@@ -1,7 +1,10 @@
-from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from datetime import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
+from django.shortcuts import render, get_object_or_404
+from .forms import MinistrantForm
+from .models import Ministrant, BankAccount, SummerCampInfo
+
 from django.views.generic import (
     ListView,
     DetailView,
@@ -9,13 +12,6 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
-from .models import Ministrant, BankAccount, SummerCampInfo
-from .forms import MinistrantForm
-
-from io import BytesIO
-from reportlab.pdfgen import canvas
-
-from datetime import datetime
 
 
 def home(request):
@@ -57,7 +53,6 @@ class MinistrantDetailView(DetailView):
 class MinistrantCreateView(LoginRequiredMixin, CreateView):
     model = Ministrant
     form_class = MinistrantForm
-    # fields = ['birthname', 'surname', 'birth_date', 'address', 'town', 'town_zip']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -103,8 +98,3 @@ def about(request):
 
 def page_not_found(request, exception):
     return render(request, '404.html', {'title': 'Page Not Found :('})
-
-
-# class MinistrantPDFGenerator(LoginRequiredMixin, UserPassesTestMixin):
-#     model = Ministrant
-
