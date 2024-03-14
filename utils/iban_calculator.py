@@ -3,7 +3,7 @@ import re
 
 class IBANCalculator:
     '''
-    A class used to calculate the International Bank Account Number (IBAN).
+    An IBANCalculator class calculates the International Bank Account Number (IBAN).
 
     Attributes
     ----------
