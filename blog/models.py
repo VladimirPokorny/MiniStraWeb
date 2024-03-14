@@ -1,16 +1,15 @@
-from django.db import models
-from django.utils import timezone
-from django.contrib.auth.models import User
-from django.urls import reverse
-import qrcode
 import os
-from django.conf import settings
-from io import BytesIO
-from django.core.files.base import ContentFile
+
+from django.contrib.auth.models import User
+from django.core.validators import RegexValidator
+from django.db import models
+from django.urls import reverse
+from django.utils import timezone
+
 from unidecode import unidecode
 
-from django.core.validators import RegexValidator
-from camp.models import BankAccount, SummerCampInfo
+from camp.models import SummerCampInfo
+from utils.qr_pay_generator import QRPayGenerator
 
 
 INSURANCE_COMPANIES = [
@@ -25,18 +24,24 @@ INSURANCE_COMPANIES = [
 
 
 class PhoneField(models.CharField):
+    '''
+    A PhoneField class is a custom model field for phone numbers.      
+    '''
     phone_regex = RegexValidator(
         regex=r'^\+(?:\d{3}\s?){4}$',
         message="Telefonní číslo musí být zadáno ve formátu: '+420 999 999 999'."
     )
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         kwargs['max_length'] = 15
         kwargs['validators'] = [self.phone_regex]
         super().__init__(*args, **kwargs)
 
 
 class Ministrant(models.Model):
+    '''
+    A Ministrant class represents a person who is going to attend the summer camp.
+    '''
     time_stamp = models.DateTimeField(default=timezone.now)
     birthname = models.CharField(max_length=100, blank=True)
     surname = models.CharField(max_length=100, blank=True)
@@ -65,91 +70,64 @@ class Ministrant(models.Model):
     unicode_name = models.CharField(max_length=100, blank=False)
 
     def __str__(self) -> str:
-        """
+        '''
         Returns a string representation of the object containing the surname and birth name.
-
-        :return: A string representing the object.
-        """
+        
+        Returns
+        -------
+        str
+            A string representation of the object containing the surname and birth name.
+        '''
         return f'{self.surname} {self.birthname}'
-
+    
     def get_absolute_url(self) -> str:
-        """
-        Returns the absolute URL to access the detail view of a `Ministrant` instance.
+        '''
+        Returns the absolute URL of the object.
 
-        :param self: The `Ministrant` instance to generate the URL for.
-        :type self: Ministrant
-        :return: The absolute URL to access the detail view of the `Ministrant` instance.
-        :rtype: str
-        """
+        Returns
+        -------
+        str
+            The absolute URL of the object.
+        '''
         return reverse('ministrant-detail', kwargs={'pk': self.pk})
     
     @property
-    def variable_symbol(self):
-        return f'{self.get_actual_camp_year()}{self.pk:04d}'
+    def variable_symbol(self) -> str:
+        '''
+        Returns a variable symbol for the payment.
+        
+        Returns
+        -------
+        str
+            A variable symbol for the payment.
+        '''
+        actual_camp_year = SummerCampInfo.objects.first().start_date.year
+        return f'{actual_camp_year}{self.pk:04d}'
 
     @property
     def unicode_name(self) -> str:
+        '''
+        Returns the name of the object in a unicode format.
+
+        Returns
+        -------
+        str
+            The name of the object in a unicode format.
+        '''
         return unidecode(f'{self.surname}_{self.birthname}')
-
-    def get_actual_camp_year(self) -> int:
-        return SummerCampInfo.objects.first().start_date.year
-
-    def generate_qr_pay_code(self):
-        qr = qrcode.QRCode(
-            version=None,
-            error_correction=qrcode.constants.ERROR_CORRECT_L,
-            box_size=10,
-            border=1,
-        )
-        print(self.collect_qr_data())
-
-        qr.add_data(self.collect_qr_data())
-        qr.make(fit=True)
-
-        img = qr.make_image(fill_color="black", back_color="white")
-
-        buf = BytesIO()
-        img.save(buf, format='PNG')
-
-        # Rewind the file.
-        buf.seek(0)
-        os.makedirs(os.path.join(settings.MEDIA_ROOT, 'qr_codes'), exist_ok=True)
-        self.qr_pay_code.save(f'{self.unicode_name}.png', ContentFile(buf.getvalue()), save=True)
-
-        return img
-    
-    def collect_qr_data(self):
-        prefix_number = BankAccount.objects.first().number
-        surfix_number = BankAccount.objects.first().bank_code
-    
-        account_number = f'{prefix_number}{surfix_number}' 
-        
-        summer_camp_price = SummerCampInfo.objects.first().price
-        qr_msg = unidecode(f'{self.surname}_{self.birthname}')
-
-        return f'SPD*1.0*ACC:{account_number}*AM:{summer_camp_price}*CC:CZK*MSG:{qr_msg}*X-VS:{self.variable_symbol}*X-KS:0308'
-
-    
-    def save(self, *args, **kwargs):
+      
+    def save(self, *args, **kwargs) -> None:
+        '''
+        Saves the object to the database.
+        '''
         super().save(*args, **kwargs)  # Call the "real" save() method.
+
         if not self.qr_pay_code:
-            img = self.generate_qr_pay_code()
-            self.qr_pay_code = f'qr_codes/{self.unicode_name}.png'
+            img = QRPayGenerator(self).generate_qr_pay_code()
+            filename = f'{self.unicode_name}.png'
+            self.qr_pay_code = os.path.join('qr_codes', filename)
             img.save(f'media/{self.qr_pay_code}')
 
+            super().save(*args, **kwargs)  # Call the "real" save() method.
 
-
-# zdravotní pojišťovna
-# Trpí dítě nějakou přecitlivělostí, alergií, astmatem? Pokud ano, jakou? (popište včetně projevů a alergenů)
-# Trpí dítě nějakou trvalou závažnou chorobou, jakou? (epilepsie, cukrovka, apod.)
-# Užívá Vaše dítě trvale nebo v době konání tábora nějaké léky? Pokud ano, uveďte dávkování. (co, kdy, kolik)
-# Setkalo se dítě v době dvou týdnů před začátkem tábora s nějakou infekční chorobou?
-# Má dítě nějaké pohybové omezení? Pokud ano, jaké?
-# Jiné sdělení (pomočování, různé druhy fóbií, činností nebo jídla, kterým se dítě vyhýbá, hyperaktivity, zvýšená náladovost, specifické rady nebo prosby):
-# Prohlašuji, že mé dítě:
-# Jméno a příjmení zákonného zástupce
-# Telefon na zákonného zástupce
-# E - mail na zákonného zástupce
-# E-mail účastníka - nepovinné
-# Telefon účastníka - nepovinné
-# Velikost trička	dle zákona č. 101/2000 Sb., o ochraně osobních údajů; EU 2016/67
+        return None
