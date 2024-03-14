@@ -28,7 +28,7 @@ class IBANCalculator:
         '''
         Returns a string of 16 characters long, which is a concatenation of the prefix number and the account number.
         '''
-        account_identifier = f'{str(self.prefix_number)}{str(self.account_number)}'
+        account_identifier = f'{str(self.prefix_number)}{str(self.account_number).zfill(10)}'
         return account_identifier.zfill(16)
     
     def make_iban_without_checksum(self) -> str:
@@ -107,10 +107,8 @@ class IBANCalculator:
 
             if len(self.number_to_array(remainder)) == 1:
                 iban_array = self.number_to_array(remainder) + iban_array
-                print(iban_array)
             elif len(self.number_to_array(remainder)) == 2:
                 iban_array = self.number_to_array(remainder) + iban_array
-                print(iban_array)
 
         return remainder
     
