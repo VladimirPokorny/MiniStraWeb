@@ -1,5 +1,6 @@
 from django.db import models
 from utils.iban_calculator import IBANCalculator
+import blog.models
 
 
 class SummerCampInfo(models.Model):
@@ -18,14 +19,19 @@ class SummerCampInfo(models.Model):
 
         if existing_instance:
             # If an instance exists, update its fields
-            existing_instance.name = self.name
-            existing_instance.start_date = self.start_date
-            existing_instance.end_date = self.end_date
-            existing_instance.price = self.price
-            existing_instance.save()
+            SummerCampInfo.objects.filter(id=existing_instance.id).update(
+                name = self.name,
+                start_date = self.start_date,
+                end_date = self.end_date,
+                price = self.price
+            )
         else:
             # If no instance exists, create a new one
             super().save(*args, **kwargs)
+
+        for ministrant in models.Ministrant.objects.all():
+            ministrant.qr_pay_code = None
+            ministrant.save()
 
     class Meta:
         verbose_name = "Camp Information"
@@ -61,6 +67,10 @@ class BankAccount(models.Model):
         else:
             # If no instance exists, create a new one
             super().save(*args, **kwargs)
+
+        for ministrant in models.Ministrant.objects.all():
+            ministrant.qr_pay_code = None
+            ministrant.save()
         
         return None
 

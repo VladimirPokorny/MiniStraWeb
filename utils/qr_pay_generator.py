@@ -38,14 +38,12 @@ class QRPayGenerator:
         buf = BytesIO()
         img.save(buf, format='PNG')
 
-        # Rewind the file.
         buf.seek(0)
         os.makedirs(os.path.join(settings.MEDIA_ROOT, 'qr_codes'), exist_ok=True)
         self.ministrant.qr_pay_code.save(f'{self.ministrant.unicode_name}.png', ContentFile(buf.getvalue()), save=True)
 
         return img
     
-
     def save_qr_pay_code(self) -> None:
         img = self.generate_qr_pay_code()
         filename = f'{self.ministrant.unicode_name}.png'
