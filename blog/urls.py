@@ -1,4 +1,6 @@
 from django.urls import path
+from . import views
+
 from .views import (
     MinistrantListView,
     MinistrantDetailView,
@@ -8,7 +10,7 @@ from .views import (
     UserMinistrantListView,
     AllMinistrantListView,
 )
-from . import views
+
 
 urlpatterns = [
     path('', MinistrantListView.as_view(), name='blog-home'),
