@@ -1,7 +1,11 @@
-from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from datetime import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
+from django.shortcuts import render, get_object_or_404
+from .forms import MinistrantForm
+from .models import Ministrant
+from camp.models import SummerCampInfo, BankAccount
+
 from django.views.generic import (
     ListView,
     DetailView,
@@ -106,8 +110,3 @@ def about(request):
 
 def page_not_found(request, exception):
     return render(request, '404.html', {'title': 'Page Not Found :('})
-
-
-# class MinistrantPDFGenerator(LoginRequiredMixin, UserPassesTestMixin):
-#     model = Ministrant
-

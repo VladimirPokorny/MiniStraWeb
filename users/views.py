@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect, HttpResponsePermanentRedirect, Htt
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 
 
-def register(request) -> (HttpResponseRedirect | HttpResponsePermanentRedirect):
+def register(request) -> (HttpResponseRedirect | HttpResponsePermanentRedirect | HttpResponse):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
