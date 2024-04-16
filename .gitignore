@@ -22,6 +22,7 @@ migrations
 *.blg
 *.bcf
 *.run.xml
+*.pdf
 
 
 # Backup files # 

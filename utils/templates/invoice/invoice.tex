@@ -39,71 +39,10 @@
 
 \begin{document}
 
+\section{Faktura ministrantský tábor 2024}
 
-% \twocolumnlayout
-% {
-%     \begin{infoSection}
-%         \infoBox{Dodavatel}{ad}
-%         \infoBox{IČ}{ICDodavatele}
-%         \infoBox{Kontakt}{Martin Hořák}
-%         \infoBox{TEL}{\href{tel:+420 123 456 789}{+420 123 456 789}}
-%         \infoBox{email}{\href{mailto:fotopokorny@email.cz}{fotopokorny@email.cz}}
-%         \infoBox{č. účtu}{115-7604670277/0100}
-%         \infoBox{variabilní s.}{cisloFaktury}
-%         \infoBox{datum vystavení}{datumVystaveni}
-%         \infoBox{datum splatnosti}{datumSplatnosti}
-%         \infoBox{způsob platby}{převodem}
-%     \end{infoSection}
-% }
-% {
-%     \begin{infoSection}
-%         \infoBox{Odběratel}{adresaOdberatele}
-%         \infoBox{IČ}{ICOdberatele}
-%         \infoBox{DIČ}{DICOdberatele}
-%         \infoBox{QR kod}{}
-%         \missingfigure[figwidth=5cm, figheight=5cm]{QR kod}
-%     \end{infoSection}
-% }
-
-\begin{table}[h!]
-    \renewcommand{\arraystretch}{1.5} % Adjust the factor as needed
-    \begin{tabular}{cc}
-        \begin{tabular}[t]{rl}
-            dodavatel           & ad \\
-            IČ                  & ICDodavatele \\
-            kontaktní osoba     & Jan Novotný \\
-            tel.                & \href{tel:+420 123 456 789}{+420 123 456 789} \\
-            e-mail               & \href{mailto:fotopokorny@email.cz}{fotopokorny@email.cz} \\
-            č. účtu             & {{ bank_account.number }}/{{ bank_account.bank_code }} \\
-            variabilní s.       & cisloFaktury \\
-            datum vystavení     & datumVystaveni \\
-            datum splatnosti    & datumSplatnosti \\
-            způsob platby       & převodem
-        \end{tabular}
-        &
-        \begin{tabular}[t]{rl}
-            odběratel           & {{ministrant.parent}} \\
-            adresa              & {{ministrant.address}} {{ministrant.town}} {{ministrant.town_zip}}  \\
-            tel.                & \href{tel: {{ministrant.parents_phone}} }{ {{ministrant.parents_phone}} } \\
-            email               & \href{mailto:{{ministrant.parents_email}} }{ {{ministrant.parents_email}} } \\
-            QR kod              & \raisebox{-0.96\height}{\missingfigure[figwidth=4cm, figheight=4cm]{}}
-        \end{tabular}
-        \\
-    \end{tabular}
-\end{table}
-
-Fakturujeme vam:
-
-\begin{table}[h!]
-    \begin{tabular}{ccc}
-        \textbf{Popis} & \textbf{Množství} & \textbf{Cena} \\
-        Pobyt na ministrantském táboře -- \textbf{ {{ ministrant.surname }} {{ ministrant.birthname }} }& 1 & {{ summercamp.price }},- Kč \\
-        \hline
-        \textbf{Celkem} & & {{ summercamp.price }},- Kč
-    \end{tabular}
-\end{table}
-
-
-
+Bankovni ucet: {{ bank_account.number }} {{ bank_account.bank_code }}
+Cena: {{ summercamp.price }},- Kc
+Datum
 
 \end{document}

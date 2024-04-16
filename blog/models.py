@@ -127,7 +127,7 @@ class Ministrant(models.Model):
         summer_camp_price = SummerCampInfo.objects.first().price
         qr_msg = unidecode(f'{self.surname}_{self.birthname}')
 
-        return f'SPD*1.0*ACC:{account_number}*AM:{summer_camp_price}*CC:CZK*MSG:{qr_msg}*X-VS:{self.variable_symbol}*X-KS:0308'
+        return fr'SPD*1.0*ACC:{account_number}*AM:{summer_camp_price}*CC:CZK*MSG:{qr_msg}*X-VS:{self.variable_symbol}*X-KS:0308'
 
     
     def save(self, *args, **kwargs):
