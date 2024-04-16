@@ -1,6 +1,7 @@
 from django.template.loader import render_to_string
 from ministrants_registration import settings
-from blog.models import Ministrant, SummerCampInfo, BankAccount
+from blog.models import Ministrant
+from camp.models import SummerCampInfo, BankAccount
 from unidecode import unidecode
 import subprocess
 from django.http import HttpResponse
