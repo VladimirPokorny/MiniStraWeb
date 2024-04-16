@@ -1,4 +1,5 @@
 \documentclass{article}
+\usepackage[czech]{babel}
 \usepackage{geometry}
 \geometry{
     a4paper,
@@ -7,14 +8,102 @@
     top=30mm,
     bottom=40mm 
 }
- \usepackage{ifthen}
+
+\usepackage{ifthen}
+\usepackage{fontawesome}
+\usepackage{hyperref}
+\usepackage{todonotes}
+
+% The \twocolumnlayout command creates a two-column layout with the specified content and takes three arguments:
+% 1. An optional argument that specifies the width of the columns. If this argument is not provided, the width defaults to 1cm.
+% 2. The content for the first column.
+% 3. The content for the second column.
+% The command returns a tabular environment with two columns. The columns are top-aligned and have no extra space on the sides.
+\newcommand*{\twocolumnlayout}[3][10cm]{
+    \begin{tabular}[h]{@{}p{#1}p{#1}@{}}
+        #2 & #3 
+    \end{tabular}
+}
+
+\newenvironment{infoSection}{\tabular[t]{@{} r @{\hspace{0.5em}} l}}{\endtabular}
+
+% The \infoBox command creates a table row with two columns and takes three arguments:
+% 1. An optional argument that specifies the vertical space after the row. If this argument is not provided, the space defaults to 2ex.
+% 2. The content for the first column.
+% 3. The content for the second column, which is placed inside a minipage. The width of the minipage is 35% of the text width.
+% The command returns a table row with the specified content and vertical space.
+\newcommand*{\infoBox}[3][2ex]{
+    #2 \hspace{3em} #3 \\
+    \noalign{\addvspace{#1}}
+}
 
 \begin{document}
 
-\section{Faktura ministrantský tábor 2024}
 
-Bankovni ucet: {{ bank_account.number }} {{ bank_account.bank_code }}
-Cena: {{ summercamp.price }},- Kc
-Datum
+% \twocolumnlayout
+% {
+%     \begin{infoSection}
+%         \infoBox{Dodavatel}{ad}
+%         \infoBox{IČ}{ICDodavatele}
+%         \infoBox{Kontakt}{Martin Hořák}
+%         \infoBox{TEL}{\href{tel:+420 123 456 789}{+420 123 456 789}}
+%         \infoBox{email}{\href{mailto:fotopokorny@email.cz}{fotopokorny@email.cz}}
+%         \infoBox{č. účtu}{115-7604670277/0100}
+%         \infoBox{variabilní s.}{cisloFaktury}
+%         \infoBox{datum vystavení}{datumVystaveni}
+%         \infoBox{datum splatnosti}{datumSplatnosti}
+%         \infoBox{způsob platby}{převodem}
+%     \end{infoSection}
+% }
+% {
+%     \begin{infoSection}
+%         \infoBox{Odběratel}{adresaOdberatele}
+%         \infoBox{IČ}{ICOdberatele}
+%         \infoBox{DIČ}{DICOdberatele}
+%         \infoBox{QR kod}{}
+%         \missingfigure[figwidth=5cm, figheight=5cm]{QR kod}
+%     \end{infoSection}
+% }
+
+\begin{table}[h!]
+    \renewcommand{\arraystretch}{1.5} % Adjust the factor as needed
+    \begin{tabular}{cc}
+        \begin{tabular}[t]{rl}
+            dodavatel           & ad \\
+            IČ                  & ICDodavatele \\
+            kontaktní osoba     & Jan Novotný \\
+            tel.                & \href{tel:+420 123 456 789}{+420 123 456 789} \\
+            e-mail               & \href{mailto:fotopokorny@email.cz}{fotopokorny@email.cz} \\
+            č. účtu             & {{ bank_account.number }}/{{ bank_account.bank_code }} \\
+            variabilní s.       & cisloFaktury \\
+            datum vystavení     & datumVystaveni \\
+            datum splatnosti    & datumSplatnosti \\
+            způsob platby       & převodem
+        \end{tabular}
+        &
+        \begin{tabular}[t]{rl}
+            odběratel           & {{ministrant.parent}} \\
+            adresa              & {{ministrant.address}} {{ministrant.town}} {{ministrant.town_zip}}  \\
+            tel.                & \href{tel: {{ministrant.parents_phone}} }{ {{ministrant.parents_phone}} } \\
+            email               & \href{mailto:{{ministrant.parents_email}} }{ {{ministrant.parents_email}} } \\
+            QR kod              & \raisebox{-0.96\height}{\missingfigure[figwidth=4cm, figheight=4cm]{}}
+        \end{tabular}
+        \\
+    \end{tabular}
+\end{table}
+
+Fakturujeme vam:
+
+\begin{table}[h!]
+    \begin{tabular}{ccc}
+        \textbf{Popis} & \textbf{Množství} & \textbf{Cena} \\
+        Pobyt na ministrantském táboře -- \textbf{ {{ ministrant.surname }} {{ ministrant.birthname }} }& 1 & {{ summercamp.price }},- Kč \\
+        \hline
+        \textbf{Celkem} & & {{ summercamp.price }},- Kč
+    \end{tabular}
+\end{table}
+
+
+
 
 \end{document}

@@ -1,0 +1,43 @@
+\documentclass{article}
+\usepackage[czech]{babel}
+\usepackage{geometry}
+\geometry{
+    a4paper,
+    left=25mm,
+    right=25mm,
+    top=30mm,
+    bottom=40mm 
+}
+\usepackage{ifthen}
+
+\newcommand{\HugeText}[2][]{
+    \begin{center}
+    \ifthenelse{\equal{#1}{l}}{\raggedright}{}
+    \ifthenelse{\equal{#1}{r}}{\raggedleft}{}
+    \huge{\textbf{#2}}
+    \end{center}
+}
+
+\newcommand{\LargeText}[2][]{
+    \begin{center}
+    \ifthenelse{\equal{#1}{l}}{\raggedright}{}
+    \ifthenelse{\equal{#1}{r}}{\raggedleft}{}
+    \Large{\textbf{#2}}
+    \end{center}
+}
+
+\newcommand{\centeredNormalText}[1]{
+    \begin{center}
+        #1
+    \end{center}
+}
+
+\begin{document}
+
+\section{Faktura ministrantský tábor 2024}
+
+Bankovni ucet: {{ bank_account.number }} {{ bank_account.bank_code }}
+Cena: {{ summercamp.price }},- Kc
+Datum
+
+\end{document}
