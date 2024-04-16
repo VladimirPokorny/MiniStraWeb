@@ -16,6 +16,7 @@ from io import BytesIO
 from reportlab.pdfgen import canvas
 
 from datetime import datetime
+from utils import email_notifier
 
 
 def home(request):
@@ -57,11 +58,13 @@ class MinistrantDetailView(DetailView):
 class MinistrantCreateView(LoginRequiredMixin, CreateView):
     model = Ministrant
     form_class = MinistrantForm
-    # fields = ['birthname', 'surname', 'birth_date', 'address', 'town', 'town_zip']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        return super().form_valid(form)
+        response = super().form_valid(form)
+
+        email_notifier.EmailNotifier(self.get_object()).send_email()
+        return response
 
 
 class MinistrantUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):

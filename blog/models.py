@@ -93,7 +93,7 @@ class Ministrant(models.Model):
         return unidecode(f'{self.surname}_{self.birthname}')
 
 
-    def generate_qr_pay_code(self) -> qrcode.image.pil.PilImage:
+    def generate_qr_pay_code(self) -> qrcode.image:
         qr = qrcode.QRCode(
             version=None,
             error_correction=qrcode.constants.ERROR_CORRECT_L,
