@@ -2,7 +2,7 @@ asgiref==3.7.2
 chardet==5.2.0
 colorama==0.4.6
 crispy-bootstrap4==2023.1
-Django==5.0.1
+Django==5.0.3
 django-crispy-forms==2.1
 pillow==10.2.0
 pypng==0.20220715.0

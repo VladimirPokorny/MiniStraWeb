@@ -1,4 +1,6 @@
 from django.urls import path
+from . import views
+
 from .views import (
     MinistrantListView,
     MinistrantDetailView,
@@ -13,6 +15,7 @@ from utils.invoice_generator import InvoiceGenerator
 
 
 from . import views
+
 
 urlpatterns = [
     path('', MinistrantListView.as_view(), name='blog-home'),
