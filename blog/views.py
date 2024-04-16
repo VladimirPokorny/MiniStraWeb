@@ -13,8 +13,9 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
-from .models import Ministrant, BankAccount, SummerCampInfo
+from .models import Ministrant
 from .forms import MinistrantForm
+from camp.models import SummerCampInfo, BankAccount
 
 from io import BytesIO
 from reportlab.pdfgen import canvas
@@ -67,7 +68,7 @@ class MinistrantCreateView(LoginRequiredMixin, CreateView):
         form.instance.author = self.request.user
         response = super().form_valid(form)
 
-        email_notifier.EmailNotifier(self.get_object()).send_email()
+        email_notifier.EmailNotifier(form.instance).send_email()
         return response
 
 
