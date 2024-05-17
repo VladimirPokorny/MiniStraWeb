@@ -9,6 +9,7 @@ from .views import (
     MinistrantDeleteView,
     UserMinistrantListView,
     AllMinistrantListView,
+    send_inform_email,
 )
 from utils.printout_form_generator import PrintOutFormGenerator
 from utils.invoice_generator import InvoiceGenerator
@@ -27,5 +28,6 @@ urlpatterns = [
     path('ministrant/all/', AllMinistrantListView.as_view(), name='all-ministrants'),
     path('ministrant/pdf/<int:pk>/printout', PrintOutFormGenerator.generate_pdf, name='ministrant-pdf-generate'),
     path('ministrant/pdf/<int:pk>/invoice', InvoiceGenerator.generate_pdf, name='ministrant-invoice-pdf'),
+    path('ministrant/send_inform_email/<int:pk>', send_inform_email, name='send_inform_email'),
     path('about/', views.about, name='blog-about'),
 ]
