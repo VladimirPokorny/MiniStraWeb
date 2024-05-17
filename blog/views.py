@@ -111,3 +111,10 @@ def about(request):
 
 def page_not_found(request, exception):
     return render(request, '404.html', {'title': 'Page Not Found :('})
+
+def send_inform_email(request, pk):
+    ministrant = get_object_or_404(Ministrant, pk=pk)
+    notifier = email_notifier.EmailNotifier(ministrant)
+    notifier.send_email()
+
+    return render(request, 'ministrant_detail.html', {'ministrant': ministrant})
