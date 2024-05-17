@@ -2,6 +2,7 @@ from datetime import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse
 from .forms import MinistrantForm
 from .models import Ministrant
 from camp.models import SummerCampInfo, BankAccount
@@ -111,3 +112,10 @@ def about(request):
 
 def page_not_found(request, exception):
     return render(request, '404.html', {'title': 'Page Not Found :('})
+
+def send_inform_email(request, pk):
+    ministrant = get_object_or_404(Ministrant, pk=pk)
+    notifier = email_notifier.EmailNotifier(ministrant)
+    notifier.send_email()
+
+    return render(request, 'ministrant_detail.html', {'ministrant': ministrant})

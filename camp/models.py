@@ -1,5 +1,6 @@
 from django.db import models
 from utils.iban_calculator import IBANCalculator
+from django.utils.formats import date_format
 
 
 class SummerCampInfo(models.Model):
@@ -7,11 +8,22 @@ class SummerCampInfo(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
 
+    start_date_name = models.CharField(max_length=20)
+    end_date_name = models.CharField(max_length=20)
+
     price = models.IntegerField()
+
+    @property
+    def start_date_name(self):
+        return date_format(self.start_date, 'j')
+
+    @property
+    def end_date_name(self):
+        return date_format(self.end_date, 'j')
 
     def __str__(self):
         return self.name
-    
+
     def save(self, *args, **kwargs):
         # Check if an instance already exists
         existing_instance = SummerCampInfo.objects.first()
@@ -22,11 +34,15 @@ class SummerCampInfo(models.Model):
                 name = self.name,
                 start_date = self.start_date,
                 end_date = self.end_date,
-                price = self.price
+                price = self.price,
+                start_date_name = self.start_date_name,
+                end_date_name = self.end_date_name
             )
         else:
             # If no instance exists, create a new one
             super().save(*args, **kwargs)
+
+        from blog import models
 
         for ministrant in models.Ministrant.objects.all():
             ministrant.qr_pay_code = None
@@ -43,10 +59,19 @@ class BankAccount(models.Model):
     bank_code = models.CharField(max_length=100)
     variable_symbol_prefix = models.IntegerField()
     iban = models.CharField(max_length=100, blank=True)
+    account_number_str = models.CharField(max_length=100, blank=True)
+
+    @property
+    def account_number_str(self):
+        if self.prefix_account_number:
+            return f"{self.prefix_account_number}-{self.account_number}/{self.bank_code}"
+        else:
+            return f"{self.account_number}/{self.bank_code}"
+
 
     def __str__(self) -> str:
         return self.name
-    
+
     def save(self, *args, **kwargs) -> None:
         # Check if an instance already exists
         existing_instance = BankAccount.objects.first()
@@ -67,10 +92,12 @@ class BankAccount(models.Model):
             # If no instance exists, create a new one
             super().save(*args, **kwargs)
 
-        for ministrant in models.Ministrant.objects.all():
+        from blog.models import Ministrant
+
+        for ministrant in Ministrant.objects.all():
             ministrant.qr_pay_code = None
             ministrant.save()
-        
+
         return None
 
     class Meta:
