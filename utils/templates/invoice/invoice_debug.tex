@@ -1,0 +1,50 @@
+\documentclass[draft]{article}
+\usepackage[czech]{babel}
+\usepackage{geometry}
+\geometry{
+    a4paper,
+    left=15mm,
+    right=15mm,
+    top=30mm,
+    bottom=40mm
+}
+
+\usepackage{ministrant_invoice}
+\usepackage{todonotes}
+
+
+\begin{document}
+
+\twocolumnlayout{
+    \begin{infoSection}
+        \infoBox{Dodavatel}{adresaDodavatele}
+        \infoBox{IČ}{ICDodavatele}
+        \infoBox{Kontakt}{Vladimír Pokorný}
+        \infoSub{telefon}{\href{tel:+420 737 845 452}{+420 737 845 452}}
+        \infoSub{email}{\href{mailto:fotopokorny@email.cz}{fotopokorny@email.cz}}
+        \infoBox{č. účtu}{115-7604670277/0100}
+        \infoBox{variabilní s.}{cisloFaktury}
+        \infoBox{datum vystavení}{datumVystaveni}
+        \infoBox{datum splatnosti}{datumSplatnosti}
+        \infoBox{způsob platby}{převodem}
+    \end{infoSection}
+}{
+    \begin{infoSection}
+        \infoBox{Odběratel}{adresaOdberatele}
+        \infoBox{IČ}{ICOdberatele}
+        \infoBox{DIČ}{DICOdberatele}
+        \infoQRCode{QR Platba}{\includegraphics[width=3.5cm]{tester_test.png}}
+    \end{infoSection}
+}
+
+
+
+Faktura ministrantský tábor 2024
+
+Bankovni ucet: 1234567890/1234
+
+Cena: 5000,- Kc
+
+Datum
+
+\end{document}

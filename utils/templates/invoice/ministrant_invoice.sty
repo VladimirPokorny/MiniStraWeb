@@ -1,0 +1,52 @@
+\usepackage{xcolor}             % colors
+\usepackage{hyperref}           % hyperlinks
+\usepackage{fontawesome}        % icons
+\usepackage{ifthen}             % conditionals
+
+%===============================================================================
+% Colors
+%===============================================================================
+\definecolor{highlightColor}{rgb}{0.22,0.45,0.70}   % light blue
+\definecolor{subduedColor}{rgb}{0.45,0.45,0.45}     % dark grey
+
+%===============================================================================
+% Custom styles
+%===============================================================================
+\def\headerStyle{\Huge}
+\def\titleStyle{\color{highlightColor}}
+
+\def\infoSectionStyle{\hspace{2em}}
+\def\infoSubStyle{\small\slshape}
+
+%===============================================================================
+% Custom commands
+%===============================================================================
+
+\newenvironment{infoSection}{
+    \infoSectionStyle\tabular[t]{@{} r @{\hspace{0.5em}} l}
+}{\endtabular}
+
+\newcommand{\twocolumnlayout}[2]{
+    \begin{tabular}[t]{@{} p{.45\linewidth} @{} p{.45\linewidth} @{}} #1 & #2 \end{tabular}
+}
+
+\newcommand{\infoBox}[2]{
+    {\titleStyle #1} & \begin{minipage}[t]{.20\textwidth} #2 \end{minipage} \\
+    \noalign{\addvspace{1ex}}
+}
+
+\newcommand{\infoQRCode}[2]{
+    {\titleStyle #1} & \begin{minipage}[t]{.20\textwidth} #2 \end{minipage} \\
+    \noalign{\addvspace{1ex}}
+
+}
+
+\newcommand{\infoSub}[2]{
+    \noalign{\vspace{-0.8ex}}
+    {\color{subduedColor} #1} & \begin{minipage}[t]{.20\textwidth} \infoSubStyle #2 \end{minipage} \\
+    \noalign{\addvspace{1.5ex}}
+}
+
+
+
+
