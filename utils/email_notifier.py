@@ -3,8 +3,8 @@ from ministrants_registration import settings
 from blog.models import Ministrant
 from camp.models import SummerCampInfo, BankAccount
 from django.template.loader import render_to_string
-import unidecode
 import os
+from django.core import mail
 
 
 class EmailNotifier:
@@ -12,20 +12,22 @@ class EmailNotifier:
         self.ministrant = ministrant
 
     def generate_email_body(self) -> str:
-        email_template = os.path.join(settings.TEMPLATES[0]['DIRS'][0], 'notification_email.html')
+        email_template = os.path.join(settings.TEMPLATES[0]['DIRS'][2], 'notification_email.html')
         self.email_body = render_to_string(email_template, {
-            'ministrant': self.ministrant, 
-            'summercamp_info': SummerCampInfo.objects.first(),
+            'ministrant': self.ministrant,
+            'summercamp': SummerCampInfo.objects.first(),
             'bank_account': BankAccount.objects.first(),
         })
-        print(self.email_body)
         return self.email_body
 
     def send_email(self):
-        send_mail(
-            subject='Summer Camp Registration',
-            message=self.generate_email_body(),
-            from_email='noreply@ministrants_registration.com',
-            recipient_list=[self.ministrant.email],
-            fail_silently=False,
-        )
+        subject = 'Summer Camp Registration'
+        from_email = settings.EMAIL_HOST_USER
+        to = self.ministrant.parents_email
+        text_content = 'This is an important message.'
+        html_content = self.generate_email_body()
+
+        email = mail.EmailMultiAlternatives(subject, text_content, from_email, [to])
+        email.attach_alternative(html_content, "text/html")
+
+        email.send()
