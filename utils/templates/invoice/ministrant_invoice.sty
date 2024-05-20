@@ -1,7 +1,7 @@
-\usepackage{xcolor}             % colors
 \usepackage{hyperref}           % hyperlinks
 \usepackage{fontawesome}        % icons
 \usepackage{ifthen}             % conditionals
+\usepackage{xcolor}
 
 %===============================================================================
 % Colors
@@ -17,6 +17,9 @@
 
 \def\infoSectionStyle{\hspace{2em}}
 \def\infoSubStyle{\small\slshape}
+
+\def\headerStyle{\normalsize\textcolor{highlightColor}}
+% \def\headerStyle{\normalsize}
 
 %===============================================================================
 % Custom commands
@@ -38,7 +41,6 @@
 \newcommand{\infoQRCode}[2]{
     {\titleStyle #1} & \begin{minipage}[t]{.20\textwidth} #2 \end{minipage} \\
     \noalign{\addvspace{1ex}}
-
 }
 
 \newcommand{\infoSub}[2]{
