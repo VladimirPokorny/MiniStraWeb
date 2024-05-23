@@ -1,0 +1,55 @@
+\usepackage{hyperref}           % hyperlinks
+\usepackage{fontawesome}        % icons
+\usepackage{ifthen}             % conditionals
+\usepackage{xcolor}             % colors
+\usepackage{fancyhdr}           % headers and footers
+\usepackage{ulem}               % underline
+\usepackage{graphicx}           % images
+
+\pagestyle{fancy}
+\fancyhf{} % Clear all header and footer fields
+
+
+%===============================================================================
+% Colors
+%===============================================================================
+\definecolor{highlightColor}{rgb}{0.22,0.45,0.70}   % light blue
+\definecolor{subduedColor}{rgb}{0.45,0.45,0.45}     % dark grey
+
+%===============================================================================
+% Custom styles
+%===============================================================================
+\def\headerStyle{\Huge}
+\def\titleStyle{\color{highlightColor}}
+
+\def\infoSectionStyle{\hspace{2em}}
+\def\infoSubStyle{\small\slshape}
+
+\def\headerStyle{\normalsize\textcolor{highlightColor}}
+
+%===============================================================================
+% Custom commands
+%===============================================================================
+\newenvironment{infoSection}{
+    \infoSectionStyle\tabular[t]{@{} r @{\hspace{0.5em}} l}
+}{\endtabular}
+
+\newcommand{\twocolumnlayout}[2]{
+    \begin{tabular}[t]{@{} p{.45\linewidth} @{} p{.45\linewidth} @{}} #1 & #2 \end{tabular}
+}
+
+\newcommand{\infoBox}[2]{
+    {\titleStyle #1} & \begin{minipage}[t]{.22\textwidth} #2 \end{minipage} \\
+    \noalign{\addvspace{1ex}}
+}
+
+\newcommand{\infoQRCode}[2]{
+    \begin{minipage}[t]{.12\textwidth} \begin{flushright} {\titleStyle #1} \end{flushright} \end{minipage} & \raisebox{-\height}{\begin{minipage}[t]{.20\textwidth} \strut #2 \end{minipage}} \\
+    \noalign{\addvspace{1ex}}
+}
+
+\newcommand{\infoSub}[2]{
+    \noalign{\vspace{-0.8ex}}
+    {\color{subduedColor} #1} & \begin{minipage}[t]{.20\textwidth} \infoSubStyle #2 \end{minipage} \\
+    \noalign{\addvspace{1.5ex}}
+}

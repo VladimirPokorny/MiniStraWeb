@@ -1,68 +1,36 @@
-from django.template.loader import render_to_string
-from ministrants_registration import settings
-from blog.models import Ministrant
-from camp.models import SummerCampInfo, BankAccount
-from unidecode import unidecode
-import subprocess
-from django.http import HttpResponse
-from io import BytesIO
 import os
 
+from blog.models import Ministrant
+from camp.models import SummerCampInfo, BankAccount
+from ministrants_registration import settings
 
-class InvoiceGenerator:
-    def __init__(self, ministrant: Ministrant.objects):
+from utils.latex_generator import LaTeX_to_PDF_Generator
+
+
+class InvoiceGenerator(LaTeX_to_PDF_Generator):
+    def __init__(self, ministrant: Ministrant):
+        super().__init__(
+            template_path=os.path.join(settings.TEMPLATES[0]['DIRS'][1], 'invoice.tex'),
+            output_directory=None,
+            output_filename=None,
+            input_data=None
+            )
+
         self.ministrant = ministrant
 
-    def generate_pdf(self, pk: Ministrant.pk):
-        self.ministrant = Ministrant.objects.get(pk=pk)
-
-        input_data = {
+    def generate_invoice(self):
+        self.input_data = {
             'ministrant': self.ministrant,
             'summercamp': SummerCampInfo.objects.first(),
             'bank_account': BankAccount.objects.first(),
+            'qr_code_path': self.convert_media_image_path_to_latex(self.ministrant.qr_pay_code.url),
         }
 
-        self.folder_name = f'{self.ministrant.unicode_name}'
-        self.folder_path = rf'{settings.BASE_DIR}\media\invoices\{self.folder_name}'
-        self.latex_path = rf'{settings.BASE_DIR}\media\invoices\{self.folder_name}\{self.folder_name}_faktura.tex'
-        self.output_path = rf'{settings.BASE_DIR}\media\invoices\{self.folder_name}\{self.folder_name}_faktura.pdf'
+        self.output_directory = rf'{settings.BASE_DIR}\media\invoices\{self.ministrant.unicode_name}'
+        self.output_filename = f'{self.ministrant.unicode_name}_faktura.pdf'
 
-        print('\n\n\n\n\n')
-        print(self.folder_name)
+        self.copy_latex_style_files([os.path.join(settings.TEMPLATES[0]['DIRS'][1], 'ministrant_invoice.sty')])
 
-        directory = os.path.dirname(self.latex_path)
-        os.makedirs(directory, exist_ok=True)
+        self.generate_pdf()
 
-        latex_empty_source = os.path.join(settings.TEMPLATES[0]['DIRS'][1], 'invoice.tex')
-
-        print('\n\n\n\n\n')
-        print(latex_empty_source)
-
-        latex_source = render_to_string(latex_empty_source, input_data)
-
-        print(latex_source)
-        
-        with open(self.latex_path, 'w') as file:
-            file.write(latex_source)
-
-        print(self.latex_path)
-        print(self.folder_path)
-
-        subprocess.run(['pdflatex', self.latex_path], cwd=self.folder_path)
-        clean_latex_logs(self.folder_path)
-
-        with open(self.output_path, 'rb') as file:
-            buffer = BytesIO(file.read())
-
-        response = HttpResponse(buffer, content_type='pdf')
-        response['Content-Disposition'] = 'inline; filename="ministrant.pdf"'
-
-        return response
-
-
-def clean_latex_logs(directory):
-    latex_aux_files = ['.aux', '.log', '.out', '.toc']
-
-    for filename in os.listdir(directory):
-        if os.path.splitext(filename)[1] in latex_aux_files:
-            os.remove(os.path.join(directory, filename))
+        return self.output_filename_path

@@ -10,6 +10,7 @@ from .views import (
     UserMinistrantListView,
     AllMinistrantListView,
     send_inform_email,
+    MinistrantInvoiceView,
 )
 from utils.printout_form_generator import PrintOutFormGenerator
 from utils.invoice_generator import InvoiceGenerator
