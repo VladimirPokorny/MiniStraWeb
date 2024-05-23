@@ -1,4 +1,4 @@
-\documentclass[draft]{article}
+\documentclass[11pt, a4paper]{article}
 \usepackage[czech]{babel}
 \usepackage{geometry}
 \geometry{
@@ -9,10 +9,13 @@
     bottom=40mm
 }
 
-\usepackage{ministrant_invoice}
-\usepackage{todonotes}
-\usepackage{fontawesome}
-\usepackage{longtable}
+\usepackage{ministrant_invoice}     % custom styles and commands
+
+%===============================================================================
+% Header and Footer
+%===============================================================================
+\rhead{\Huge{Faktura {{ministrant.variable_symbol}} }}
+\lfoot{\color{subduedColor}{Tato faktura byla vygenerována pomocí jazyku \href{https://www.latex-project.org/}{\LaTeX.}}}
 
 \begin{document}
 
@@ -28,17 +31,17 @@
         {% else %}
             \infoBox{č. účtu}{ {{ bank_account.account_number }} / {{ bank_account.bank_code }} }
         {% endif %}
-        \infoBox{variabilní s.}{cisloFaktury}
-        \infoBox{datum vystavení}{datumVystaveni}
-        \infoBox{datum splatnosti}{datumSplatnosti}
+        \infoBox{variabilní s.}{ {{ministrant.variable_symbol}}}
+        \infoBox{datum vystavení}{ {{ministrant.time_stamp}}}
+        \infoBox{datum splatnosti}{ {{ministrant.time_stamp}} }
         \infoBox{způsob platby}{převodem}
     \end{infoSection}
 }{
     \begin{infoSection}
-        \infoBox{Odběratel}{adresaOdberatele}
+        \infoBox{Odběratel}{ministrant.parent}
         \infoBox{IČ}{ICOdberatele}
         \infoBox{DIČ}{DICOdberatele}
-        \infoQRCode{QR Platba}{\includegraphics[width=3.5cm]{tester_test.png}}
+        \infoQRCode{QR Platba}{\includegraphics[width=3.5cm]{ {{ qr_code_path }} }}
     \end{infoSection}
 }
 
