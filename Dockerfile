@@ -1,4 +1,4 @@
-FROM python:3.10-alpine AS base
+FROM python:3.12-alpine AS base
 RUN apk add --update --virtual .build-deps \
     build-base \
     postgresql-dev \
@@ -7,9 +7,9 @@ RUN apk add --update --virtual .build-deps \
 COPY requirements.txt /app/requirements.txt
 RUN pip install -r /app/requirements.txt
 
-FROM python:3.10-alpine
+FROM python:3.12-alpine
 RUN apk add libpq
-COPY --from=base /usr/local/lib/python3.10/site-packages/ /usr/local/lib/python3.10/site-packages/
+COPY --from=base /usr/local/lib/python3.12/site-packages/ /usr/local/lib/python3.12/site-packages/
 COPY --from=base /usr/local/bin/ /usr/local/bin/
 COPY . /app
 ENV PYTHONUNBUFFERED 1
