@@ -1,0 +1,64 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage[czech]{babel}
+\usepackage{geometry}
+\geometry{
+    a4paper,
+    left=15mm,
+    right=15mm,
+    top=30mm,
+    bottom=40mm
+}
+
+\usepackage{ministrant_invoice}     % custom styles and commands
+
+%===============================================================================
+% Header and Footer
+%===============================================================================
+\rhead{\Huge{Faktura {{ministrant.variable_symbol}} }}
+\lfoot{\color{subduedColor}{Tato faktura byla vygenerována pomocí jazyku \href{https://www.latex-project.org/}{\LaTeX.}}}
+
+\begin{document}
+
+\twocolumnlayout{
+    \begin{infoSection}
+        \infoBox{Dodavatel}{adresaDodavatele}
+        \infoBox{IČ}{ICDodavatele}
+        \infoBox{Kontakt}{Vladimír Pokorný}
+        \infoSub{\large\faMobilePhone}{\href{tel:+420 737 845 452}{+420 737 845 452}}
+        \infoSub{\footnotesize\faEnvelope}{\href{mailto:fotopokorny@email.cz}{fotopokorny@email.cz}}
+        {% if bank_account.prefix_account_number %}
+            \infoBox{č. účtu}{ {{ bank_account.prefix_account_number }}-{{ bank_account.account_number }}/{{ bank_account.bank_code }} }
+        {% else %}
+            \infoBox{č. účtu}{ {{ bank_account.account_number }} / {{ bank_account.bank_code }} }
+        {% endif %}
+        \infoBox{variabilní s.}{ {{ministrant.variable_symbol}}}
+        \infoBox{datum vystavení}{ {{ministrant.time_stamp}}}
+        \infoBox{datum splatnosti}{ {{ministrant.time_stamp}} }
+        \infoBox{způsob platby}{převodem}
+    \end{infoSection}
+}{
+    \begin{infoSection}
+        \infoBox{Odběratel}{ministrant.parent}
+        \infoBox{IČ}{ICOdberatele}
+        \infoBox{DIČ}{DICOdberatele}
+        \infoQRCode{QR Platba}{\includegraphics[width=3.5cm]{ {{ qr_code_path }} }}
+    \end{infoSection}
+}
+
+\vspace{2em}
+
+\renewcommand{\arraystretch}{2}
+\begin{tabular}{c p{0.5\linewidth} l r r}
+    \hline
+    \headerStyle{č. položky} &
+    \headerStyle{Položka} &
+    \headerStyle{Cena za mj} &
+    \headerStyle{mj} &
+    \headerStyle{Celkem} \\
+    \hline
+\end{tabular}
+\renewcommand{\arraystretch}{1}
+
+\vspace{2em}
+
+\end{document}

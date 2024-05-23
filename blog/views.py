@@ -2,6 +2,7 @@ from datetime import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
+from django.http import FileResponse
 from .forms import MinistrantForm
 from .models import Ministrant
 from camp.models import SummerCampInfo, BankAccount
@@ -13,6 +14,15 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
+from .models import Ministrant
+from .forms import MinistrantForm
+from camp.models import SummerCampInfo, BankAccount
+
+from io import BytesIO
+from reportlab.pdfgen import canvas
+
+from datetime import datetime
+from utils import email_notifier, invoice_generator, printout_form_generator
 
 
 def home(request):
@@ -57,7 +67,10 @@ class MinistrantCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        return super().form_valid(form)
+        response = super().form_valid(form)
+
+        email_notifier.EmailNotifier(form.instance).send_email()
+        return response
 
 
 class MinistrantUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -91,6 +104,45 @@ class MinistrantDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if self.request.user == ministrant.author:
             return True
         return False
+
+
+class MinistrantInvoiceView(DetailView):
+    model = Ministrant
+    template_name = 'blog/invoice.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['summer_camp'] = SummerCampInfo.objects.first()
+        context['bank_account'] = BankAccount.objects.first()
+        return context
+
+    def generate_invoice(self, pk):
+        invoice_path = invoice_generator.InvoiceGenerator(Ministrant.objects.get(pk=pk)).generate_invoice()
+
+        with open(invoice_path, 'rb') as pdf:
+            pdf_bytes = BytesIO(pdf.read())
+            response = FileResponse(pdf_bytes, content_type='application/pdf')
+            response['Content-Disposition'] = 'inline;filename=some_file.pdf'
+            return response
+
+
+class MinistrantPrintOutView(DetailView):
+    model = Ministrant
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['summer_camp'] = SummerCampInfo.objects.first()
+        context['bank_account'] = BankAccount.objects.first()
+        return context
+
+    def generate_printout_form(self, pk):
+        invoice_path = printout_form_generator.PrintOutFormGenerator(Ministrant.objects.get(pk=pk)).generate_printout_form()
+
+        with open(invoice_path, 'rb') as pdf:
+            pdf_bytes = BytesIO(pdf.read())
+            response = FileResponse(pdf_bytes, content_type='application/pdf')
+            response['Content-Disposition'] = 'inline;filename=some_file.pdf'
+            return response
 
 
 def about(request):

@@ -10,6 +10,7 @@
             <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'ministrant-update' ministrant.id %}">Update</a>
             <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'ministrant-delete' ministrant.id %}">Delete</a>
             <a class="btn btn-info btn-sm mt-1 mb-1" href="{% url 'ministrant-pdf-generate' ministrant.id %}" target="_blank">Generate PDF</a>
+            <a class="btn btn-info btn-sm mt-1 mb-1" href="{% url 'ministrant-invoice-pdf' ministrant.id %}" target="_blank">Faktura</a>
             
             {% if ministrant.paid == True %}
               <div class="alert alert-success mt-1 mb-1" role="alert">

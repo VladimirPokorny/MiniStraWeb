@@ -10,12 +10,19 @@ media/invoices/
 migrations
 /static
 
-# Latex
+# LaTeX
 *.aux
-*.fdb_latexmk
+*synctex.gz
 *.fls
-*.synctex.gz
-
+*.fdb_latexmk
+*.log
+*.out
+*.toc
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.pdf
 
 # Backup files #
 *.bak

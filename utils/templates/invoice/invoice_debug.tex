@@ -1,0 +1,59 @@
+\documentclass[draft]{article}
+\usepackage[czech]{babel}
+\usepackage{geometry}
+\geometry{
+    a4paper,
+    left=15mm,
+    right=15mm,
+    top=30mm,
+    bottom=40mm
+}
+
+\usepackage{ministrant_invoice}
+\usepackage{todonotes}
+\usepackage{fontawesome}
+\usepackage{longtable}
+
+
+
+\begin{document}
+
+\twocolumnlayout{
+    \begin{infoSection}
+        \infoBox{Dodavatel}{adresaDodavatele}
+        \infoBox{IČ}{ICDodavatele}
+        \infoBox{Kontakt}{Vladimír Pokorný}
+        \infoSub{\large\faMobilePhone}{\href{tel:+420 737 845 452}{+420 737 845 452}}
+        \infoSub{\footnotesize\faEnvelope}{\href{mailto:fotopokorny@email.cz}{fotopokorny@email.cz}}
+        \infoBox{č. účtu}{115-7604670277/0100}
+        \infoBox{variabilní s.}{cisloFaktury}
+        \infoBox{datum vystavení}{datumVystaveni}
+        \infoBox{datum splatnosti}{datumSplatnosti}
+        \infoBox{způsob platby}{převodem}
+    \end{infoSection}
+}{
+    \begin{infoSection}
+        \infoBox{Odběratel}{adresaOdberatele}
+        \infoBox{IČ}{ICOdberatele}
+        \infoBox{DIČ}{DICOdberatele}
+        \infoQRCode{QR Platba}{\includegraphics[width=3.5cm]{tester_test.png}}
+    \end{infoSection}
+}
+
+\vspace{2em}
+
+\renewcommand{\arraystretch}{2}
+\begin{tabular}{c p{0.5\linewidth} l r r}
+    \hline
+    \headerStyle{č. položky} &
+    \headerStyle{Položka} &
+    \headerStyle{Cena za mj} &
+    \headerStyle{mj} &
+    \headerStyle{Celkem} \\
+    \hline
+\end{tabular}
+\renewcommand{\arraystretch}{1}
+
+\vspace{2em}
+
+\end{document}

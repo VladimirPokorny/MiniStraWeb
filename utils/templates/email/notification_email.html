@@ -1,0 +1,22 @@
+<p>Dobrý den,</p>
+
+<p>obdrželi jsme od Vás přihlášku na ministrantský tábor 2024. V příloze naleznete výpis přihlášky a informace o táboře (název souboru: Prihlaska_{{ ministrant.birthname }}_{{ ministrant.surname }}.pdf). Prosíme, zkontrolujte, zda je přihláška vyplněna správně a všechny uvedené informace jsou pravdivé. </p>
+
+<p>Pokud byste chtěli některý údaj změnit, napište mi prosím na: <a href="mailto:ministranti.straznice@gmail.com?subject=Oprava přihlášky, ministrantský tábor - {{ ministrant.birthname }} {{ ministrant.surname }}">ministranti.straznice@gmail.com</a></p>
+
+<p>Pokud v přihlášce budou všechny informace správné, prosím o zaplacení účastnického poplatku ve výši {{ summercamp.price }} Kč na účet <b>{{ summercamp.bank_account }}</b> do poznámky, prosím, uveďte jméno, příjmení a datum narození přihlašovaného ministranta.</p>
+
+<p>
+    Termín: 14.-20. 7. 2024 (NE-SO)<br/>
+    Cena: {{ summercamp.price }} Kč<br/>
+    Ministrantský účet: <b>{{ summercamp.bank_account }}</b><br/>
+    Variabilní symbol: <b>{{ ministrant.variable_symbol }}</b><br/>
+    Poznámka: <b>{{ ministrant.birthname }} {{ ministrant.surname }}</b><br/>
+</p>
+
+<p>
+    Přeji Vám krásný den!<br/>
+    za tým vedoucích<br/>
+    {{ summercamp.manager_name }}<br/>
+    {{ summercamp.manager_phone }}
+</p>
