@@ -25,7 +25,7 @@ INSURANCE_COMPANIES = [
 
 class PhoneField(models.CharField):
     '''
-    A PhoneField class is a custom model field for phone numbers.      
+    A PhoneField class is a custom model field for phone numbers.
     '''
     phone_regex = RegexValidator(
         regex=r'^\+(?:\d{3}\s?){4}$',
@@ -70,16 +70,8 @@ class Ministrant(models.Model):
     unicode_name = models.CharField(max_length=100, blank=False)
 
     def __str__(self) -> str:
-        '''
-        Returns a string representation of the object containing the surname and birth name.
-        
-        Returns
-        -------
-        str
-            A string representation of the object containing the surname and birth name.
-        '''
         return f'{self.surname} {self.birthname}'
-    
+
     def get_absolute_url(self) -> str:
         '''
         Returns the absolute URL of the object.
@@ -90,12 +82,12 @@ class Ministrant(models.Model):
             The absolute URL of the object.
         '''
         return reverse('ministrant-detail', kwargs={'pk': self.pk})
-    
+
     @property
     def variable_symbol(self) -> str:
         '''
         Returns a variable symbol for the payment.
-        
+
         Returns
         -------
         str
@@ -115,7 +107,7 @@ class Ministrant(models.Model):
             The name of the object in a unicode format.
         '''
         return unidecode(f'{self.surname}_{self.birthname}')
-      
+
     def save(self, *args, **kwargs) -> None:
         '''
         Saves the object to the database.

@@ -1,13 +1,8 @@
-from django.template.loader import render_to_string
-from ministrants_registration import settings
+import os
+
 from blog.models import Ministrant
 from camp.models import SummerCampInfo, BankAccount
-from unidecode import unidecode
-import subprocess
-from django.http import HttpResponse
-from io import BytesIO
-import os
-import shutil
+from ministrants_registration import settings
 
 from utils.latex_generator import LaTeX_to_PDF_Generator
 
@@ -28,6 +23,7 @@ class InvoiceGenerator(LaTeX_to_PDF_Generator):
             'ministrant': self.ministrant,
             'summercamp': SummerCampInfo.objects.first(),
             'bank_account': BankAccount.objects.first(),
+            'qr_code_path': self.convert_media_image_path_to_latex(self.ministrant.qr_pay_code.url),
         }
 
         self.output_directory = rf'{settings.BASE_DIR}\media\invoices\{self.ministrant.unicode_name}'
