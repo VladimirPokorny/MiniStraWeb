@@ -2,6 +2,7 @@ from django.template.loader import render_to_string
 import subprocess
 import os
 import shutil
+from ministrants_registration import settings
 
 
 class LaTeX_to_PDF_Generator:
@@ -20,16 +21,17 @@ class LaTeX_to_PDF_Generator:
 
         self.input_filename_path = None
 
-        check_file()
+    def convert_media_image_path_to_latex(self, relative_image_path: str) -> str:
+        relative_path = relative_image_path.lstrip('/')
+        absolute_path = os.path.join(settings.BASE_DIR, relative_path)
+        latex_path = absolute_path.replace('\\', '/')
+        return latex_path.replace('_', '\\_')
 
     def check_output_filename_extension(self) -> None:
-        check_file()
-
         if not self.output_filename.endswith('.pdf'):
             self.output_filename.split('.')[0] + '.pdf'
 
     def set_input_filename_path(self) -> None:
-        check_file()
         self.input_filename_path = os.path.join(self.output_directory, self.output_filename.split('.')[0] + '.tex')
 
     def copy_latex_style_files(self, style_files: list) -> None:
@@ -41,7 +43,6 @@ class LaTeX_to_PDF_Generator:
         os.makedirs(self.output_directory, exist_ok=True)
 
     def make_tex_file(self) -> None:
-        check_file()
         self.check_output_filename_extension()
         self.set_input_filename_path()
 
@@ -57,7 +58,6 @@ class LaTeX_to_PDF_Generator:
             file.write(self.latex_source)
 
     def generate_pdf(self):
-        check_file()
         self.make_tex_file()
 
         completed_process = subprocess.run(['pdflatex', self.input_filename_path], cwd=self.output_directory)
@@ -76,14 +76,3 @@ def clean_latex_logs(directory):
     for filename in os.listdir(directory):
         if os.path.splitext(filename)[1] in latex_aux_files:
             os.remove(os.path.join(directory, filename))
-
-def check_file(path = r'C:\Programming\MiniStraWeb\media\invoices\test_tester'):
-    print("___________________________________________________________")
-    if os.path.isfile(path):
-        print(f"{path} is a file.")
-    elif os.path.isdir(path):
-        print(f"{path} is a directory.")
-    else:
-        print(f"{path} does not exist.")
-    print("___________________________________________________________")
-    print("\n\n")
