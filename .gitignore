@@ -12,6 +12,7 @@ media/qr_codes/
 media/printout_forms/
 media/invoices/
 media/images/
+media/insurance_confiramtion/
 
 # LaTeX
 *.aux
