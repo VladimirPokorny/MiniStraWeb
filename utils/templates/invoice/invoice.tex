@@ -38,9 +38,9 @@
     \end{infoSection}
 }{
     \begin{infoSection}
-        \infoBox{Odběratel}{ministrant.parent}
-        \infoBox{IČ}{ICOdberatele}
-        \infoBox{DIČ}{DICOdberatele}
+        \infoBox{Odběratel}{ {{ministrant.parent}} }
+        \infoSub{\large\faMobilePhone}{\href{tel: {{ministrant.parents_phone}} }{  {{ministrant.parents_phone}} }}
+        \infoSub{\footnotesize\faEnvelope}{\href{mailto: {{ministrant.parents_email}} }{ {{ministrant.parents_email}} }}
         \infoQRCode{QR Platba}{\includegraphics[width=3.5cm]{ {{ qr_code_path }} }}
     \end{infoSection}
 }
