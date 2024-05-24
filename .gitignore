@@ -4,7 +4,10 @@
 *.pyc
 __pycache__
 db.sqlite3
-migrations
+blog/migrations/
+camp/migrations/
+users/migrations/
+
 /static
 
 # media files
@@ -156,3 +159,5 @@ GitHub.sublime-settings
 !.vscode/launch.json
 !.vscode/extensions.json
 .history
+blog/migrations/0001_initial.py
+blog/migrations/0001_initial.py
