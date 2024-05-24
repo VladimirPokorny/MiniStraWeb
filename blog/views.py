@@ -23,6 +23,7 @@ from reportlab.pdfgen import canvas
 
 from datetime import datetime
 from utils import email_notifier, invoice_generator, printout_form_generator
+from utils.insurance_confirmation import insurance_confirmation
 
 
 def home(request):
@@ -117,12 +118,14 @@ class MinistrantInvoiceView(DetailView):
         return context
 
     def generate_invoice(self, pk):
-        invoice_path = invoice_generator.InvoiceGenerator(Ministrant.objects.get(pk=pk)).generate_invoice()
+        ministrant = Ministrant.objects.get(pk=pk)
+        invoice_path = invoice_generator.InvoiceGenerator(ministrant).generate_invoice()
 
         with open(invoice_path, 'rb') as pdf:
             pdf_bytes = BytesIO(pdf.read())
             response = FileResponse(pdf_bytes, content_type='application/pdf')
-            response['Content-Disposition'] = 'inline;filename=some_file.pdf'
+            filename = f'{ministrant.unicode_name}_invoice.pdf'
+            response['Content-Disposition'] = f'inline;filename={filename}'
             return response
 
 
@@ -136,12 +139,35 @@ class MinistrantPrintOutView(DetailView):
         return context
 
     def generate_printout_form(self, pk):
-        invoice_path = printout_form_generator.PrintOutFormGenerator(Ministrant.objects.get(pk=pk)).generate_printout_form()
+        ministrant = Ministrant.objects.get(pk=pk)
+        invoice_path = printout_form_generator.PrintOutFormGenerator(ministrant).generate_printout_form()
 
         with open(invoice_path, 'rb') as pdf:
             pdf_bytes = BytesIO(pdf.read())
             response = FileResponse(pdf_bytes, content_type='application/pdf')
-            response['Content-Disposition'] = 'inline;filename=some_file.pdf'
+            filename = f'{ministrant.unicode_name}_printout.pdf'
+            response['Content-Disposition'] = f'inline;filename={filename}'
+            return response
+
+
+class InsuranceConfirmationView(DetailView):
+    model = Ministrant
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['summer_camp'] = SummerCampInfo.objects.first()
+        context['bank_account'] = BankAccount.objects.first()
+        return context
+
+    def generate_insurance_confirmation(self, pk):
+        ministrant = Ministrant.objects.get(pk=pk)
+        insurance_confirmation_path = insurance_confirmation.InsuranceConfirmation(ministrant).generate_insurance_confirmation()
+
+        with open(insurance_confirmation_path, 'rb') as pdf:
+            pdf_bytes = BytesIO(pdf.read())
+            response = FileResponse(pdf_bytes, content_type='application/pdf')
+            filename = f'{ministrant.unicode_name}_insurance.pdf'
+            response['Content-Disposition'] = f'inline;filename={filename}'
             return response
 
 
