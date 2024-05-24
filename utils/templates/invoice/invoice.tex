@@ -35,7 +35,7 @@
         {% endif %}
         \infoBox{variabilní s.}{ {{ministrant.variable_symbol}}}
         \infoBox{datum vystavení}{ {{ministrant.time_stamp}}}
-        \infoBox{datum splatnosti}{ {{ministrant.time_stamp}} }
+        \infoBox{datum splatnosti}{ {{ministrant.invoice_pay_day}} }
         \infoBox{způsob platby}{převodem}
     \end{infoSection}
 }{
@@ -43,6 +43,8 @@
         \infoBox{Odběratel}{ {{ministrant.parent}} }
         \infoSub{\large\faMobilePhone}{\href{tel: {{ministrant.parents_phone}} }{  {{ministrant.parents_phone}} }}
         \infoSub{\footnotesize\faEnvelope}{\href{mailto: {{ministrant.parents_email}} }{ {{ministrant.parents_email}} }}
+        \infoBox{Adresa}{ {{ministrant.address }} \\ {{ministrant.town }} \\ {{ministrant.town_zip }} }
+
         \infoQRCode{QR Platba}{\includegraphics[width=3.5cm]{ {{ qr_code_path }} }}
     \end{infoSection}
 }
@@ -57,6 +59,14 @@
     \headerStyle{Cena za mj} &
     \headerStyle{mj} &
     \headerStyle{Celkem} \\
+    \hline
+    1 &
+    Ministrantský tábor 2024:
+    {{ministrant.birthname}}
+    {{ministrant.surname}} &
+    {{summercamp.price}} &
+    1 &
+    {{summercamp.price}} \\
     \hline
 \end{tabular}
 \renewcommand{\arraystretch}{1}
