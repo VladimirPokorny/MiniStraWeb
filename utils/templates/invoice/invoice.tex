@@ -21,11 +21,13 @@
 
 \twocolumnlayout{
     \begin{infoSection}
-        \infoBox{Dodavatel}{adresaDodavatele}
-        \infoBox{IČ}{ICDodavatele}
-        \infoBox{Kontakt}{Vladimír Pokorný}
-        \infoSub{\large\faMobilePhone}{\href{tel:+420 737 845 452}{+420 737 845 452}}
-        \infoSub{\footnotesize\faEnvelope}{\href{mailto:fotopokorny@email.cz}{fotopokorny@email.cz}}
+        \infoBox{Dodavatel}{ {{summercamp.advisor_name}} }
+        \infoBox{Adresa}{ {{summercamp.advisor_address}} }
+
+        \infoBox{IČ}{ {{summercamp.advisor_id_number}} }
+        \infoBox{Kontakt}{ {{summercamp.main_manager}} }
+        \infoSub{\large\faMobilePhone}{\href{tel: {{summercamp.main_manager_phone}} }{ {{summercamp.main_manager_phone}} }}
+        \infoSub{\footnotesize\faEnvelope}{\href{mailto: {{summercamp.main_manager_email}} }{ {{summercamp.main_manager_email}} }}
         {% if bank_account.prefix_account_number %}
             \infoBox{č. účtu}{ {{ bank_account.prefix_account_number }}-{{ bank_account.account_number }}/{{ bank_account.bank_code }} }
         {% else %}
