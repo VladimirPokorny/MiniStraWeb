@@ -10,6 +10,7 @@ from unidecode import unidecode
 
 from camp.models import SummerCampInfo
 from utils.qr_pay_generator import QRPayGenerator
+from utils.initials_image_generator import MinistrantImageGenerator
 
 
 INSURANCE_COMPANIES = [
@@ -69,6 +70,8 @@ class Ministrant(models.Model):
     qr_pay_code = models.ImageField(upload_to='qr_codes', blank=True, null=True)
     unicode_name = models.CharField(max_length=100, blank=False)
 
+    image = models.ImageField(upload_to='images', blank=True, null=True)
+
     def __str__(self) -> str:
         return f'{self.surname} {self.birthname}'
 
@@ -118,8 +121,16 @@ class Ministrant(models.Model):
             img = QRPayGenerator(self).generate_qr_pay_code()
             filename = f'{self.unicode_name}.png'
             self.qr_pay_code = os.path.join('qr_codes', filename)
-            img.save(f'media/{self.qr_pay_code}')
+            os.makedirs('media\\qr_codes', exist_ok=True)
+            img.save(f'media\\{self.qr_pay_code}')
 
             super().save(*args, **kwargs)  # Call the "real" save() method.
 
-        return None
+        if not self.image:
+            img = MinistrantImageGenerator(self).generate_image()
+            filename = f'{self.unicode_name}_initials.png'
+            self.image_path = os.path.join('images', filename)
+            os.makedirs('media\\images', exist_ok=True)
+            img.save(f'media\\{self.image_path}')
+
+            super().save(*args, **kwargs)

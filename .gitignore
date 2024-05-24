@@ -4,11 +4,14 @@
 *.pyc
 __pycache__
 db.sqlite3
+migrations
+/static
+
+# media files
 media/qr_codes/
 media/printout_forms/
 media/invoices/
-migrations
-/static
+media/images/
 
 # LaTeX
 *.aux

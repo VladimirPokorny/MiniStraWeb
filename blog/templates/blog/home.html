@@ -6,7 +6,7 @@
     {% for ministrant in ministrants %}
       {% if ministrant.author == user or user.is_superuser%}
         <article class="d-flex content-section">
-          <img class="flex-shrink-0 rounded-circle article-img" src="{{ ministrant.author.profile.image.url }}">
+          <img class="flex-shrink-0 rounded-circle article-img" src="{{ ministrant.image.url }}">
           <div class="flex-grow-1 ms-3">
             <div class="article-metadata">
               <small class="text-muted">Přihláška podána dne {{ ministrant.time_stamp|date:"d. F Y" }}</small>

@@ -15,17 +15,17 @@ class MinistrantForm(ModelForm):
     class Meta:
         model = Ministrant
         fields = [
-            'birthname', 
-            'surname', 
-            'birth_date', 
-            'address', 
-            'town', 
-            'town_zip', 
-            'insurance', 
-            'alergy', 
-            'swimming', 
-            'parent', 
-            'parents_phone', 
+            'birthname',
+            'surname',
+            'birth_date',
+            'address',
+            'town',
+            'town_zip',
+            'insurance',
+            'alergy',
+            'swimming',
+            'parent',
+            'parents_phone',
             'parents_email',
             'phone',
             'email',
@@ -46,7 +46,7 @@ class MinistrantForm(ModelForm):
             'parents_email': 'e-mail rodiče'
         }
         widgets = {
-            'birth_date': DateInput(),
+            'birth_date': DateInput(format='%Y-%m-%d'),
             'insurance': forms.Select(attrs={'class': 'form-select'}),
         }
 
@@ -55,20 +55,3 @@ class MinistrantForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Odeslat', css_class='btn btn-outline-info'))
-
-
-# time_stamp = models.DateTimeField(default=timezone.now)
-# birthname = models.CharField(max_length=100)
-# surname = models.CharField(max_length=100)
-# birth_date = models.DateField()
-# address = models.CharField(max_length=100)
-# town = models.CharField(max_length=100)
-# town_zip = models.CharField(max_length=100)
-
-# insurance = models.CharField(max_length=3, choices=INSURANCES)
-
-# parent = models.CharField(max_length=100)
-# parents_phone = models.CharField(max_length=100)
-# parents_email = models.CharField(max_length=100)
-
-# author = models.ForeignKey(User, on_delete=models.CASCADE)
