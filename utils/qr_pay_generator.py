@@ -20,19 +20,19 @@ class QRPayGenerator:
     def __init__(self, ministrant) -> None:
         self.ministrant = ministrant
         self._qr_pay_data = None
-    
+
     def collect_qr_data(self) -> str:
         '''
         Collects data for the QR code.
         '''
         iban = BankAccount.objects.first().iban
-        
+
         summer_camp_price = SummerCampInfo.objects.first().price
         qr_msg = self.ministrant.unicode_name
         variable_symbol = self.ministrant.variable_symbol
 
         return f'SPD*1.0*ACC:{iban}*AM:{summer_camp_price}*CC:CZK*MSG:{qr_msg}*X-VS:{variable_symbol}*X-KS:0308'
-    
+
     def generate_qr_pay_code(self) -> qrcode.image:
         '''
         Generates a QR code for the ministrant.
@@ -58,7 +58,7 @@ class QRPayGenerator:
         self.ministrant.qr_pay_code.save(f'{self.ministrant.unicode_name}.png', ContentFile(buf.getvalue()), save=True)
 
         return img
-    
+
     def save_qr_pay_code(self) -> None:
         '''
         Saves the QR code to the ministrant's instance.
