@@ -12,6 +12,8 @@ from camp.models import SummerCampInfo
 from utils.qr_pay_generator import QRPayGenerator
 from utils.initials_image_generator import MinistrantImageGenerator
 
+from config import config
+
 
 INSURANCE_COMPANIES = [
     ('111', '111: VZP'),
@@ -65,6 +67,8 @@ class Ministrant(models.Model):
 
     variable_symbol = models.CharField(max_length=100, blank=True)
     paid = models.BooleanField(default=False)
+    invoice_pay_day = models.DateField(blank=True, null=True)
+    paid_date = models.DateField(blank=True, null=True)
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     qr_pay_code = models.ImageField(upload_to='qr_codes', blank=True, null=True)
@@ -110,6 +114,10 @@ class Ministrant(models.Model):
             The name of the object in a unicode format.
         '''
         return unidecode(f'{self.surname}_{self.birthname}')
+
+    @property
+    def invoice_pay_day(self) -> timezone.datetime:
+        return (self.time_stamp + timezone.timedelta(days=config.PAY_DELAY)).date()
 
     def save(self, *args, **kwargs) -> None:
         '''
