@@ -1,4 +1,4 @@
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage, send_mail
 from ministrants_registration import settings
 from blog.models import Ministrant
 from camp.models import SummerCampInfo, BankAccount
@@ -20,14 +20,24 @@ class EmailNotifier:
         })
         return self.email_body
 
+    # def send_email(self):
+    #     subject = 'Summer Camp Registration'
+    #     from_email = settings.EMAIL_HOST_USER
+    #     to = self.ministrant.parents_email
+    #     text_content = 'This is an important message.'
+    #     html_content = self.generate_email_body()
+
+    #     email = mail.EmailMultiAlternatives(subject, text_content, from_email, [to])
+    #     email.attach_alternative(html_content, "text/html")
+
+    #     email.send()
+
     def send_email(self):
-        subject = 'Summer Camp Registration'
-        from_email = settings.EMAIL_HOST_USER
-        to = self.ministrant.parents_email
-        text_content = 'This is an important message.'
-        html_content = self.generate_email_body()
+        send_mail(
+            subject='Summer Camp Registration',
+            message=self.generate_email_body(),
+            from_email='noreply@ministrants_registration.com',
+            recipient_list=[self.ministrant.email],
+            fail_silently=False,
+        )
 
-        email = mail.EmailMultiAlternatives(subject, text_content, from_email, [to])
-        email.attach_alternative(html_content, "text/html")
-
-        email.send()
