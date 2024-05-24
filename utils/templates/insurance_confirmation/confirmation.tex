@@ -1,0 +1,59 @@
+\documentclass{article}
+\usepackage[czech]{babel}
+\usepackage{geometry}
+\geometry{
+    a4paper,
+    left=25mm,
+    right=25mm,
+    top=30mm,
+    bottom=40mm
+}
+
+\usepackage{tikz}
+\usepackage[absolute, overlay]{textpos}
+
+\begin{document}
+
+\tikz[remember picture, overlay] \node[inner sep=0pt] at (current page.center){\includegraphics[width=\paperwidth,height=\paperheight]{ {{insurance_confirmation_form}} }};
+
+% Name and surname
+\begin{textblock*}{5cm}(10cm, 76mm)
+    Jan Novák
+\end{textblock*}
+
+% Personal ID
+\begin{textblock*}{5cm}(10cm, 88mm)
+    1234567890
+\end{textblock*}
+
+% X mark
+\begin{textblock*}{5cm}(94.5mm, 128.2mm)
+    X
+\end{textblock*}
+
+% Date
+\begin{textblock*}{5cm}(10cm, 153mm)
+    1. 1. 2020
+\end{textblock*}
+
+% Address
+\begin{textblock*}{10cm}(80mm, 164mm)
+    \noindent Českomoravská provincie Řádu zbožných škol - piaristů \\
+    IČ: 00406180    \\
+    Kostelní 514,   \\
+    696 62, Strážnice
+\end{textblock*}
+
+% Price
+\begin{textblock*}{10cm}(75mm, 195mm)
+    1000,00 Kč
+\end{textblock*}
+
+% Date
+\begin{textblock*}{10cm}(75mm, 215mm)
+    1. 1. 2020
+\end{textblock*}
+
+
+
+\end{document}
