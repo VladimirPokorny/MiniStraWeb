@@ -9,9 +9,22 @@ class SummerCampInfo(models.Model):
 
     price = models.IntegerField()
 
+    advisor_name = models.CharField(max_length=255, blank=True)
+    advisor_id_number = models.CharField(max_length=255, blank=True)
+    advisor_address = models.CharField(max_length=255, blank=True)
+
+    main_manager = models.CharField(max_length=255, blank=True)
+    main_manager_phone = models.CharField(max_length=255, blank=True)
+    main_manager_email = models.EmailField(max_length=255, blank=True)
+
+    chef_name = models.CharField(max_length=255, blank=True)
+    chef_phone = models.CharField(max_length=255, blank=True)
+    chef_email = models.EmailField(max_length=255, blank=True)
+
+
     def __str__(self):
         return self.name
-    
+
     def save(self, *args, **kwargs):
         # Check if an instance already exists
         existing_instance = SummerCampInfo.objects.first()
@@ -22,15 +35,27 @@ class SummerCampInfo(models.Model):
                 name = self.name,
                 start_date = self.start_date,
                 end_date = self.end_date,
-                price = self.price
+                price = self.price,
+                advisor_name = self.advisor_name,
+                advisor_id_number = self.advisor_id_number,
+                advisor_address = self.advisor_address,
+                main_manager = self.main_manager,
+                main_manager_phone = self.main_manager_phone,
+                main_manager_email = self.main_manager_email,
+                chef_name = self.chef_name,
+                chef_phone = self.chef_phone,
+                chef_email = self.chef_email
             )
         else:
             # If no instance exists, create a new one
             super().save(*args, **kwargs)
 
-        for ministrant in models.Ministrant.objects.all():
-            ministrant.qr_pay_code = None
-            ministrant.save()
+        try:
+            for ministrant in models.Ministrant.objects.all():
+                ministrant.qr_pay_code = None
+                ministrant.save()
+        except AttributeError:
+            pass
 
     class Meta:
         verbose_name = "Camp Information"
@@ -46,7 +71,7 @@ class BankAccount(models.Model):
 
     def __str__(self) -> str:
         return self.name
-    
+
     def save(self, *args, **kwargs) -> None:
         # Check if an instance already exists
         existing_instance = BankAccount.objects.first()
@@ -67,10 +92,13 @@ class BankAccount(models.Model):
             # If no instance exists, create a new one
             super().save(*args, **kwargs)
 
-        for ministrant in models.Ministrant.objects.all():
-            ministrant.qr_pay_code = None
-            ministrant.save()
-        
+        try:
+            for ministrant in models.Ministrant.objects.all():
+                ministrant.qr_pay_code = None
+                ministrant.save()
+        except AttributeError:
+            pass
+
         return None
 
     class Meta:

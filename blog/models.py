@@ -34,7 +34,7 @@ class PhoneField(models.CharField):
     )
 
     def __init__(self, *args, **kwargs) -> None:
-        kwargs['max_length'] = 15
+        kwargs['max_length'] = 16
         kwargs['validators'] = [self.phone_regex]
         super().__init__(*args, **kwargs)
 
