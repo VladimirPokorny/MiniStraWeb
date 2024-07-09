@@ -1,0 +1,11 @@
+- emailova notifikace po registraci
+- zapomenute heslo - email
+- vice rocniku (jeden aktivni)
+- vice bankovnich uctu - jeden aktivni
+- administracni rozhrani misto superuser admin page
+- user typ (rodic, dite, administrator, super user)
+- opravit insurance confirmation (proc to nefunguje?)
+- generovani dokumentu pres API (+ loading widget)
+- automaticke generovani dokumentace
+- nazvy aplikace:
+    - 
