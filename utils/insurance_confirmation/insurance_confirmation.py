@@ -20,18 +20,28 @@ class InsuranceConfirmation(LaTeX_to_PDF_Generator):
 
     def generate_insurance_confirmation(self):
         insurance_confirmation_form = os.path.join(settings.STATIC_ROOT, 'utils', 'insurance_confirmation', '205_insurance_confirmation.pdf')
+        print(f"Input PDF path: {insurance_confirmation_form}")
+
+        if not os.path.exists(insurance_confirmation_form):
+            raise FileNotFoundError(f"The file {insurance_confirmation_form} does not exist.")
+
         insurance_confirmation_form = self.convert_media_image_path_to_latex(insurance_confirmation_form)
+        print(f"Converted PDF path: {insurance_confirmation_form}")
+
+        # Define the output directory and ensure it exists
+        self.output_directory = os.path.join(settings.BASE_DIR, 'media', 'insurance_confirmation', self.ministrant.unicode_name)
+        os.makedirs(self.output_directory, exist_ok=True)
+
+        # Define the output filename and path
+        self.output_filename = f'{self.ministrant.unicode_name}.pdf'
+        self.output_filename_path = os.path.join(self.output_directory, self.output_filename)
+
         self.input_data = {
             'ministrant': self.ministrant,
             'summercamp': SummerCampInfo.objects.first(),
             'bank_account': BankAccount.objects.first(),
             'insurance_confirmation_form': insurance_confirmation_form,
         }
-
-        print(insurance_confirmation_form)
-
-        self.output_directory = rf'{settings.BASE_DIR}\media\insurance_confirmation\{self.ministrant.unicode_name}'
-        self.output_filename = f'{self.ministrant.unicode_name}.pdf'
 
         self.generate_pdf()
 
