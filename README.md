@@ -4,7 +4,7 @@ An open source project summer camp administration. The main purpose is to have a
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-The project uses Python 3.11.
+The project uses Python 3.12.
 
 ### Run the Project with Docker
 You can run the project using Docker:
@@ -53,7 +53,7 @@ python manage.py runserver
 - better UI for customers
 - switch to between CZ and EN language and others
 - payment API integration
-- admin form fields customisation 
+- admin form fields customisation
 
 ## TODO LIST project & development
 - testing environments

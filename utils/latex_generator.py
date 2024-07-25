@@ -56,6 +56,7 @@ class LaTeX_to_PDF_Generator:
 
         with open(self.input_filename_path, 'w') as file:
             file.write(self.latex_source)
+            file.close()
 
     def generate_pdf(self):
         self.make_tex_file()

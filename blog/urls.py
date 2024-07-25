@@ -12,6 +12,7 @@ from .views import (
     send_inform_email,
     MinistrantInvoiceView,
     MinistrantPrintOutView,
+    InsuranceConfirmationView
 
 )
 
@@ -27,5 +28,6 @@ urlpatterns = [
     path('ministrant/send_inform_email/<int:pk>', send_inform_email, name='send_inform_email'),
     path('ministrant/pdf/<int:pk>/printout', MinistrantPrintOutView.generate_printout_form, name='ministrant-pdf-generate'),
     path('ministrant/pdf/<int:pk>/invoice', MinistrantInvoiceView.generate_invoice, name='ministrant-invoice-pdf'),
+    path('ministrant/pdf/<int:pk>/insurance-confirmation', InsuranceConfirmationView.generate_insurance_confirmation, name='insurance-confirmation-pdf'),
     path('about/', views.about, name='blog-about'),
 ]
