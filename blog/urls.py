@@ -11,6 +11,7 @@ from .views import (
     AllMinistrantListView,
     MinistrantInvoiceView,
     MinistrantPrintOutView,
+    InsuranceConfirmationView
 
 )
 from utils.printout_form_generator import PrintOutFormGenerator
@@ -30,5 +31,6 @@ urlpatterns = [
     path('ministrant/all/', AllMinistrantListView.as_view(), name='all-ministrants'),
     path('ministrant/pdf/<int:pk>/printout', MinistrantPrintOutView.generate_printout_form, name='ministrant-pdf-generate'),
     path('ministrant/pdf/<int:pk>/invoice', MinistrantInvoiceView.generate_invoice, name='ministrant-invoice-pdf'),
+    path('ministrant/pdf/<int:pk>/insurance-confirmation', InsuranceConfirmationView.generate_insurance_confirmation, name='insurance-confirmation-pdf'),
     path('about/', views.about, name='blog-about'),
 ]

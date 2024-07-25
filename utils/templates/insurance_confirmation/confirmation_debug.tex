@@ -2,23 +2,27 @@
 \usepackage[czech]{babel}
 \usepackage{geometry}
 \geometry{
-    a4paper
+    a4paper,
+    left=0mm,
+    right=0mm,
+    top=0mm,
+    bottom=0mm
 }
 
-\usepackage{graphicx}
-\usepackage{background}
 \usepackage{tikz}
 \usepackage[absolute, overlay]{textpos}
 
 \begin{document}
 
+% \tikz[remember picture, overlay] \node[inner sep=0pt] at (current page.center){\includegraphics[width=\paperwidth,height=\paperheight]{C:/Programming/MiniStraWeb/blog/static/utils/insurance\_confirmation/205\_insurance\_confirmation.pdf}};
+
 \begin{textblock*}{\paperwidth}(-5mm, 0mm)
-    \includegraphics[width=\paperwidth, height=\paperheight]{ {{ insurance_confirmation_form }} }
+    \includegraphics[width=\paperwidth,height=\paperheight]{C:/Programming/MiniStraWeb/blog/static/utils/insurance\_confirmation/205\_insurance\_confirmation.pdf}
 \end{textblock*}
 
 % Name and surname
 \begin{textblock*}{5cm}(10cm, 76mm)
-    {{ ministrant.birthname }} {{ ministrant.surname }}
+    Jan Novák
 \end{textblock*}
 
 % Personal ID
@@ -46,7 +50,7 @@
 
 % Price
 \begin{textblock*}{10cm}(75mm, 195mm)
-    {{ summercamp.price }} Kč
+    1000,00 Kč
 \end{textblock*}
 
 % Date
